@@ -20,7 +20,7 @@
 
 class Key {
 public:
-    Key() : tonic(c3), intervals(0), scale(0) {}
+    //Key() : tonic(c3), intervals(0), scale(0) {}
     Key(int tonic = c3, std::vector<char> intervals = major_intervals) :
             tonic(tonic), intervals(intervals) {
         char pitch = tonic;
@@ -37,6 +37,7 @@ private:
 };
 
 struct CompositionMetrics {
+    CompositionMetrics() : key(), timeSignature(), tempo(80) {}
     CompositionMetrics();
     Key key;
     TimeSignature timeSignature;

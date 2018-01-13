@@ -21,4 +21,3 @@ int dot(int duration) {
 }
 
 #endif /* UTILITIES_H */
-

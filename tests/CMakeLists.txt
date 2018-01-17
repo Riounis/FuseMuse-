@@ -35,5 +35,5 @@ endif()
 # Now simply link against gtest or gtest_main as needed. Eg
 add_executable(testtest testtest.cpp)
 include_directories(../src)
-target_link_libraries(noteTest gtest_main fmpp)
-add_test(NAME note_tests COMMAND noteTest)
+target_link_libraries(testtest gtest_main fmpp)
+add_test(NAME testtest COMMAND testtest)

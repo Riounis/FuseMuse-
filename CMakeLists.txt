@@ -3,6 +3,7 @@ project(FuseMusepp CXX)
 set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=gnu++11")
 
 # Enable automatic tests via CMake
+# Probably will be removed - google test automatically discovers tests
 enable_testing()
 
 add_subdirectory(src)

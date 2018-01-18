@@ -17,3 +17,6 @@ Makefile
 CTestTestfile.cmake
 Testing/Temporary/CTestCostData.txt
 Testing/Temporary/LastTest.log
+Jenkins Instance Private Key/FMJenkinsTestServer.pem
+Testing/Temporary/LastTestsFailed.log
+tests/testmain.exe

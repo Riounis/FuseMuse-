@@ -4,10 +4,13 @@
  *
  * Created on January 6, 2018, 9:24 PM
  */
-
+ 
 #ifndef CONSTANTS_H
 #define CONSTANTS_H
 
+#include <vector>
+
+// Octave 0
 const int c0 = 0;
 const int cs0 = 1;
 const int df0 = 1;
@@ -28,6 +31,7 @@ const int as0 = 10;
 const int bf0 = 10;
 const int b0 = 11;
 const int cf1 = 11;
+// Octave 1
 const int bs0 = 12;
 const int c1 = 12;
 const int cs1 = 13;
@@ -49,6 +53,7 @@ const int as1 = 22;
 const int bf1 = 22;
 const int b1 = 23;
 const int cf2 = 23;
+// Octave 2
 const int bs1 = 24;
 const int c2 = 24;
 const int cs2 = 25;
@@ -70,6 +75,7 @@ const int as2 = 34;
 const int bf2 = 34;
 const int b2 = 35;
 const int cf3 = 35;
+// Octave 3
 const int bs2 = 36;
 const int c3 = 36;
 const int cs3 = 37;
@@ -91,6 +97,7 @@ const int as3 = 46;
 const int bf3 = 46;
 const int b3 = 47;
 const int cf4 = 47;
+// Octave 4
 const int bs3 = 48;
 const int c4 = 48;
 const int cs4 = 49;
@@ -112,6 +119,7 @@ const int as4 = 58;
 const int bf4 = 58;
 const int b4 = 59;
 const int cf5 = 59;
+// Octave 5
 const int bs4 = 60;
 const int c5 = 60;
 const int cs5 = 61;
@@ -133,6 +141,7 @@ const int as5 = 70;
 const int bf5 = 70;
 const int b5 = 71;
 const int cf6 = 71;
+// Octave 6
 const int bs5 = 72;
 const int c6 = 72;
 const int cs6 = 73;
@@ -154,6 +163,7 @@ const int as6 = 82;
 const int bf6 = 82;
 const int b6 = 83;
 const int cf7 = 83;
+// Octave 7
 const int bs6 = 84;
 const int c7 = 84;
 const int cs7 = 85;
@@ -175,6 +185,7 @@ const int as7 = 94;
 const int bf7 = 94;
 const int b7 = 95;
 const int cf8 = 95;
+// Octave 8
 const int bs7 = 96;
 const int c8 = 96;
 const int cs8 = 97;
@@ -196,6 +207,7 @@ const int as8 = 106;
 const int bf8 = 106;
 const int b8 = 107;
 const int cf9 = 107;
+// Octave 9
 const int bs8 = 108;
 const int c9 = 108;
 const int cs9 = 109;
@@ -217,6 +229,7 @@ const int as9 = 118;
 const int bf9 = 118;
 const int b9 = 119;
 const int cf10 = 119;
+// Octave 10
 const int bs9 = 120;
 const int c10 = 121;
 const int cs10 = 122;
@@ -228,38 +241,63 @@ const int e10 = 125;
 const int ff10 = 125;
 const int es10 = 126;
 const int f10 = 126;
+// Rest
 const int rest = 127;
 
+// One-Hundred Twenty-Eighth Note Variants
 const int triplet_one_twenty_eighth_note = 2;
 const int one_twenty_eighth_note = 3;
+const int triplet_dotted_one_twenty_eighth_note = 3;
+// Sixty-Fourth Note Variants
 const int triplet_sixty_fourth_note = 4;
 const int sixty_fourth_note = 6;
+const int triplet_dotted_sixty_fourth_note = 6;
+const int triplet_double_dotted_sixty_fourth_note = 7;
 const int dotted_sixty_fourth_note = 9;
+// Thirty-Second Note Variants
 const int triplet_thirty_second_note = 8;
 const int thirty_second_note = 12;
+const int triplet_dotted_thirty_second_note = 12;
+const int triplet_double_dotted_thirty_second_note = 14;
 const int dotted_thirty_second_note = 18;
 const int double_dotted_thirty_second_note = 21;
+// Sixteenth Note Variants
 const int triplet_sixteenth_note = 16;
 const int sixteenth_note = 24;
+const int triplet_dotted_sixteenth_note = 24;
+const int triplet_double_dotted_sixteenth_note = 28;
 const int dotted_sixteenth_note = 36;
 const int double_dotted_sixteenth_note = 42;
+// Eighth Note Variants
 const int triplet_eighth_note = 32;
 const int eighth_note = 48;
+const int triplet_dotted_eighth_note = 48;
+const int triplet_double_dotted_eighth_note = 56;
 const int dotted_eighth_note = 72;
 const int double_dotted_eighth_note = 84;
+// Quarter Note Variants
 const int triplet_quarter_note = 64;
 const int quarter_note = 96;
+const int triplet_dotted_quarter_note = 96;
+const int triplet_double_dotted_quarter_note = 112;
 const int dotted_quarter_note = 144;
 const int double_dotted_quarter_note = 168;
+// Half Note Variants
 const int triplet_half_note = 128;
 const int half_note = 192;
+const int triplet_dotted_half_note = 192;
+const int triplet_double_dotted_half_note = 224;
 const int dotted_half_note = 288;
 const int double_dotted_half_note = 336;
+// Whole Note Variants
 const int triplet_whole_note = 256;
 const int whole_note = 384;
+const int triplet_dotted_whole_note = 384;
+const int triplet_double_dotted_whole_note = 448;
 const int dotted_whole_note = 576;
 const int double_dotted_whole_note = 672;
 
+// Common Scale Intervals
 const std::vector<char> ionian_intervals = {2, 2, 1, 2, 2, 2, 1};
 const std::vector<char> dorian_intervals = {2, 1, 2, 2, 2, 1, 2};
 const std::vector<char> phrygian_intervals = {1, 2, 2, 2, 1, 2, 2};

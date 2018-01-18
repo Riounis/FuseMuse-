@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 2.8.2)
+cmake_minimum_required(VERSION 2.8.4)
 
 # Download and unpack googletest at configure time
 configure_file(CMakeLists.txt.in googletest-download/CMakeLists.txt)
@@ -33,7 +33,7 @@ if (CMAKE_VERSION VERSION_LESS 2.8.11)
 endif()
 
 # Now simply link against gtest or gtest_main as needed. Eg
-add_executable(testtest testtest.cpp)
+add_executable(testmain testmain.cpp notetest.cpp)
 include_directories(../src)
-target_link_libraries(testtest gtest_main fmpp)
-add_test(NAME testtest COMMAND testtest)
+target_link_libraries(testmain gtest_main fmpp)
+add_test(NAME testmain COMMAND testmain)

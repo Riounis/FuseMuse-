@@ -1,8 +1,7 @@
 /* 
- * File:   Constants.h
+ * File:   constants.h
  * Author: Sam Rappl and Jacob Inkrote
  *
- * Created on January 6, 2018, 9:24 PM
  */
  
 #ifndef CONSTANTS_H

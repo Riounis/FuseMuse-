@@ -1,8 +1,7 @@
 /* 
- * File:   Chord.h
+ * File:   chord.h
  * Author: Sam Rappl and Jacob Inkrote
  *
- * Created on January 6, 2018, 8:36 PM
  */
 
 #ifndef CHORD_H

@@ -1,3 +1,9 @@
+/* 
+ * File:   notetest.cpp
+ * Author: Sam Rappl and Jacob Inkrote
+ *
+ */
+
 #include "note.h"
 #include "constants.h"
 #include "gtest/gtest.h"

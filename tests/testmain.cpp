@@ -1,3 +1,9 @@
+/* 
+ * File:   testmain.cpp
+ * Author: Sam Rappl and Jacob Inkrote
+ *
+ */
+
 #include "gtest/gtest.h"
 
 int main(int argc, char **argv) {

@@ -1,8 +1,7 @@
 /* 
- * File:   Note.h
+ * File:   note.h
  * Author: Sam Rappl and Jacob Inkrote
  *
- * Created on January 5, 2018, 5:05 PM
  */
 
 #ifndef NOTE_H
@@ -22,7 +21,7 @@ struct Note {
 			double_dotted(double_dotted), staccato(staccato),
 			tenuto(tenuto), accent(accent), fermata(fermata),
 			tied(tied), slurred(slurred){}
-    bool dot() { 
+	bool dot() { 
         if (!dotted) {
 			if (duration == one_twenty_eighth_note) {
 				return false;	

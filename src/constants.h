@@ -307,5 +307,15 @@ const std::vector<char> locrian_intervals = {1, 2, 2, 1, 2, 2, 2};
 const std::vector<char> major_intervals = ionian_intervals;
 const std::vector<char> minor_intervals = aeolian_intervals;
 
+// Dynamics
+const int ppp = 0;
+const int pp = 1;
+const int p = 2;
+const int mp = 3;
+const int mf = 4;
+const int f = 5;
+const int ff = 6;
+const int fff = 7;
+
 #endif /* CONSTANTS_H */
 

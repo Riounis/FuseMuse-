@@ -8,8 +8,9 @@
 #define NOTE_H
 
 #include "constants.h"
+#include "event.h"
 
-struct Note {
+struct Note: public Event {
     Note(): pitch(c4), duration(quarter_note), triplet(0),
 			dotted(0), double_dotted(0), staccato(0), tenuto(0), 
             accent(0), fermata(0), tied(0), slurred(0){}

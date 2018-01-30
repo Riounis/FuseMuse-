@@ -9,8 +9,9 @@
 
 #include <vector>
 #include "constants.h"
+#include "event.h"
 
-struct Chord {
+struct Chord: public Event {
 	Chord(): pitches({c4, e4, g4}), duration(quarter_note), triplet(0),
 			dotted(0), double_dotted(0), staccato(0), tenuto(0), 
             accent(0), fermata(0), tied(0), slurred(0){}

@@ -9,7 +9,7 @@
 
 #include <string>
 #include <vector>
-#include "Constants.h"
+#include "constants.h"
 
 struct TimeSignature {
     TimeSignature(int num = 4, int denom = 4) : num(num), denom(denom) {

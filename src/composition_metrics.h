@@ -37,6 +37,7 @@ public:
 	std::vector<char> getScale() { return scale; }
 	std::vector<char> getIntervals() { return intervals; }
 	char getTonic() { return tonic; }
+	//char getKeySignature
 private:
     char tonic;
     std::vector<char> intervals;

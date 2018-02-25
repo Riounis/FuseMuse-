@@ -11,12 +11,13 @@
 #include "event.h"
 
 struct Dynamics: public Event {
-	Dynamics(): volume(3), cresc(0), decresc(0) {}
+	Dynamics(): volume(3), cresc(0), decresc(0), duration(0) {}
 	Dynamics(int volume, int cresc = 0, int decresc = 0) : 
-			volume(volume), cresc(cresc), decresc(decresc) {}
+			volume(volume), cresc(cresc), decresc(decresc), duration(0) {}
 	unsigned int volume : 3;
 	unsigned int cresc : 1;
 	unsigned int decresc : 1;
+	unsigned int duration : 1;
 };
 
 #endif /* DYNAMICS_H */

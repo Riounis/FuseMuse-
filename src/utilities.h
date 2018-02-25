@@ -11,16 +11,6 @@
 #include <string>
 #include "composition.h"
 
-// deprecated
-/**int dot(int duration) {
-    if (duration % 2 == 1) {
-        throw std::exception("This note has an odd duration and cannot be" +
-                "dotted.");
-    } else {
-        return duration * 1.5;
-    }
-}*/
-
 string fmCompToJSON(composition comp) {
 	
 }

@@ -31,6 +31,7 @@ struct Chord: public Event {
 				dotted = true;
 				duration *= 1.5;
 			}
+			return true;
 		} else if (dotted && !double_dotted) {
 			if (duration == dotted_sixty_fourth_note) {
 				return false;
@@ -39,6 +40,7 @@ struct Chord: public Event {
 				duration /= 6;
 				duration *= 7;
 			}
+			return true;
 		} else if (dotted && double_dotted) {
 			return false;
 		}
@@ -55,6 +57,7 @@ struct Chord: public Event {
 			duration /= 4;
 			duration *= 7;
 		}
+		return true;
 	}
 	bool putInTriplet() {
 		if (triplet) {
@@ -64,6 +67,33 @@ struct Chord: public Event {
 			duration /= 3;
 			duration *= 2;
 		}
+		return true;
+	}
+	bool addOctave() {
+		if (pitches.size() == 0 || pitches[pitches.size()-1] + 12 > 126) {
+			return false;
+		}
+		for (int i = 0; i < pitches.size(); i++) {
+			pitches[i] += 12;
+		}
+		return true;
+	}
+	bool dropOctave() {
+		if (pitches.size() == 0 || pitches[0] - 12 < 0) {
+			return false;
+		}
+		for (int i = 0; i < pitches.size(); i++) {
+			pitches[i] -= 12;
+		}
+		return true;
+	}
+	bool invert() {
+		if (pitches.size() < 2 || pitches[0] + 12 > 126) {
+			return false;
+		}
+		pitches.push_back(pitches[0] + 12);
+		pitches.erase(pitches.begin());
+		return true;
 	}
     std::vector<char> pitches;
     unsigned int duration : 10;

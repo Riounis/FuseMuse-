@@ -124,3 +124,45 @@ TEST(chordTest, tripletTest) {
 	ASSERT_FALSE(chord2.putInTriplet());
 	ASSERT_FALSE(chord3.putInTriplet());
 }
+
+TEST(chordTest, addOctaveTest) {
+	std::vector<char> invec;
+	invec.push_back(c5);
+	invec.push_back(e5);
+	invec.push_back(g5);
+	Chord chord;
+	chord.addOctave();
+	ASSERT_EQ(invec, chord.pitches);
+	for (int i = 5; i < 9; i++) {
+		ASSERT_TRUE(chord.addOctave());
+	}
+	ASSERT_FALSE(chord.addOctave());
+}
+
+TEST(chordTest, dropOctaveTest) {
+	std::vector<char> invec;
+	invec.push_back(c3);
+	invec.push_back(e3);
+	invec.push_back(g3);
+	Chord chord;
+	chord.dropOctave();
+	ASSERT_EQ(invec, chord.pitches);
+	for (int i = 3; i > 0; i--) {
+		ASSERT_TRUE(chord.dropOctave());
+	}
+	ASSERT_FALSE(chord.dropOctave());
+}
+
+TEST(chordTest, inversionTest) {
+	std::vector<char> invec;
+	invec.push_back(e4);
+	invec.push_back(g4);
+	invec.push_back(c5);
+	Chord chord;
+	chord.invert();
+	ASSERT_EQ(invec, chord.pitches);
+	std::vector<char> invec2;
+	invec2.push_back(c4);
+	Chord chord2(invec2, quarter_note);
+	ASSERT_FALSE(chord2.invert());
+}

@@ -11,15 +11,11 @@
 #include <string>
 #include "composition.h"
 
-string fmCompToJSON(composition comp) {
+string fmCompToJSON(Composition comp) {
 	
 }
 
-m21 fmCompToM21(composition comp) {
-	
-}
-
-composition m21ToFmComp(m21 m) {
+Composition jsonToFMComp(string json) {
 	
 }
 

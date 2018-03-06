@@ -12,7 +12,7 @@
 #include "gtest/gtest.h"
 #include <vector>
 
-TEST(eventinheritancetest, dynamicsInheritanceTest) {
+TEST(eventInheritanceTest, dynamicsInheritanceTest) {
 	std::vector<Event> events;
 	Dynamics dynamic;
 	events.push_back(dynamic);
@@ -31,7 +31,7 @@ TEST(eventinheritancetest, dynamicsInheritanceTest) {
 	}
 }
 
-TEST(eventinheritancetest, noteInheritanceTest) {
+TEST(eventInheritanceTest, noteInheritanceTest) {
 	std::vector<Event> events;
 	Note note;
 	events.push_back(note);
@@ -50,7 +50,7 @@ TEST(eventinheritancetest, noteInheritanceTest) {
 	}
 }
 
-TEST(eventinheritancetest, chordInheritanceTest) {
+TEST(eventInheritanceTest, chordInheritanceTest) {
 	std::vector<Event> events;
 	Chord chord;
 	events.push_back(chord);
@@ -69,7 +69,7 @@ TEST(eventinheritancetest, chordInheritanceTest) {
 	}
 }
 
-TEST(eventinheritancetest, mixedListInheritanceTest) {
+TEST(eventInheritanceTest, mixedListInheritanceTest) {
 	std::vector<Event> events;
 	Dynamics dynamic(ff, false, true);
 	events.push_back(dynamic);

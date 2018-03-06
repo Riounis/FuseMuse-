@@ -23,12 +23,28 @@ public:
 	    length -= it->duration;
 		return events.erase(it);
 	}
-	void insert(Event e) {
-		events.insert(it, e);
+	void insertNote(auto it, Note n) {
+		events.insert(it, n);
+		length += n.duration;
 	}
-	void appendNote(Note n) { events.push_back(n); length += n.duration; }
-	void appendChord(Chord c) { events.push_back(c); length += c.duration; }
-	void appendDynamic(Dynamics d) { events.push_back(d); }
+	void insertChord(auto it, Chord c) {
+		events.insert(it, c);
+		length += c.duration;
+	}
+	void insertDynamic(auto it, Dynamics d) {
+		events.insert(it, d);
+	}
+	void appendNote(Note n) {
+		events.push_back(n);
+		length += n.duration;
+	}
+	void appendChord(Chord c) {
+		events.push_back(c);
+		length += c.duration;
+	}
+	void appendDynamic(Dynamics d) {
+		events.push_back(d);
+	}
 	Dynamics getDynamicsAtPosition(int pos) {
 		int currentPosition = 0;
 		auto it = begin();
@@ -42,6 +58,7 @@ public:
 		while (it->duration != 0 && it != it2) {
 		    it--;
 		}
+		// need dynamic casting here
 		return it*;
 	}
 	std::vector<char> getPitchesAtPosition(int pos) {

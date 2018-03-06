@@ -11,9 +11,8 @@
 
 TEST(chordTest, chordDefaultConstructorTest) {
 	// Test Default constructor
-	std::vector<char> defvec = {c4, e4, g4};
 	Chord chord;
-	ASSERT_EQ(defvec, chord.pitches);
+	ASSERT_EQ(c_major_chord, chord.pitches);
 	ASSERT_EQ(quarter_note, chord.duration);
 	ASSERT_FALSE(chord.triplet);
 	ASSERT_FALSE(chord.dotted);
@@ -28,12 +27,8 @@ TEST(chordTest, chordDefaultConstructorTest) {
 
 TEST(chordTest, chordConstructorPitchDurationTest) {
 	// Test pitch and duration constructor
-	std::vector<char> invec;
-	invec.push_back(d4);
-	invec.push_back(fs4);
-	invec.push_back(a4);
-	Chord chord(invec, quarter_note);
-	ASSERT_EQ(invec, chord.pitches);
+	Chord chord(d_major_chord, quarter_note);
+	ASSERT_EQ(d_major_chord, chord.pitches);
 	ASSERT_EQ(quarter_note, chord.duration);
 	ASSERT_FALSE(chord.triplet);
 	ASSERT_FALSE(chord.dotted);
@@ -47,11 +42,7 @@ TEST(chordTest, chordConstructorPitchDurationTest) {
 }
 
 TEST(chordTest, chordConstructorPitchDurationTripDotDoubleTest) {
-	std::vector<char> invec;
-	invec.push_back(d4);
-	invec.push_back(fs4);
-	invec.push_back(a4);
-	Chord chord(invec, dotted_quarter_note, false, true, false);
+	Chord chord(d_major_chord, dotted_quarter_note, false, true, false);
 	ASSERT_FALSE(chord.triplet);
 	ASSERT_TRUE(chord.dotted);
 	ASSERT_FALSE(chord.double_dotted);
@@ -59,13 +50,9 @@ TEST(chordTest, chordConstructorPitchDurationTripDotDoubleTest) {
 
 TEST(chordTest, chordAllArgsConstructorTest) {
 	// Test all argument constructor
-	std::vector<char> invec;
-	invec.push_back(d4);
-	invec.push_back(fs4);
-	invec.push_back(a4);
-	Chord chord(invec, quarter_note, false, false, false, true,
+	Chord chord(d_major_chord, quarter_note, false, false, false, true,
 		false, false, false, false, true);
-	ASSERT_EQ(invec, chord.pitches);
+	ASSERT_EQ(d_major_chord, chord.pitches);
 	ASSERT_EQ(quarter_note, chord.duration);
 	ASSERT_FALSE(chord.triplet);
 	ASSERT_FALSE(chord.dotted);
@@ -79,11 +66,7 @@ TEST(chordTest, chordAllArgsConstructorTest) {
 }
 
 TEST(chordTest, dotTest) {
-	std::vector<char> invec;
-	invec.push_back(d4);
-	invec.push_back(fs4);
-	invec.push_back(a4);
-	Chord chord(invec, quarter_note);
+	Chord chord(gs_minor_chord, quarter_note);
 	
 	// Test dot function
 	chord.dot();
@@ -97,23 +80,19 @@ TEST(chordTest, dotTest) {
 	ASSERT_FALSE(chord.dot());
 	
 	// Test double dotting
-	Chord chord2(invec, quarter_note);
+	Chord chord2(a_sus2_chord, quarter_note);
 	chord2.doubledot();
 	ASSERT_EQ(double_dotted_quarter_note, chord2.duration);
 	
 	// Test double dotting a dotted chord
-	Chord chord3(invec, dotted_quarter_note, false, true, false);
+	Chord chord3(e_minor_7_chord, dotted_quarter_note, false, true, false);
 	ASSERT_FALSE(chord3.doubledot());
 }
 
 TEST(chordTest, tripletTest) {
-	std::vector<char> invec;
-	invec.push_back(d4);
-	invec.push_back(fs4);
-	invec.push_back(a4);
-	Chord chord(invec, quarter_note);
-	Chord chord2(invec, dotted_eighth_note, false, true, false);
-	Chord chord3(invec, triplet_eighth_note, true, false, false);
+	Chord chord(b_sus4_chord, quarter_note);
+	Chord chord2(c_major_7_chord, dotted_eighth_note, false, true, false);
+	Chord chord3(e_minor_chord, triplet_eighth_note, true, false, false);
 	
 	// Test putInTriplet function
 	chord.putInTriplet();
@@ -127,13 +106,13 @@ TEST(chordTest, tripletTest) {
 
 TEST(chordTest, addOctaveTest) {
 	std::vector<char> invec;
-	invec.push_back(c5);
-	invec.push_back(e5);
-	invec.push_back(g5);
+	invec.push_back(c4);
+	invec.push_back(e4);
+	invec.push_back(g4);
 	Chord chord;
 	chord.addOctave();
 	ASSERT_EQ(invec, chord.pitches);
-	for (int i = 5; i < 9; i++) {
+	for (int i = 4; i < 9; i++) {
 		ASSERT_TRUE(chord.addOctave());
 	}
 	ASSERT_FALSE(chord.addOctave());
@@ -141,13 +120,13 @@ TEST(chordTest, addOctaveTest) {
 
 TEST(chordTest, dropOctaveTest) {
 	std::vector<char> invec;
-	invec.push_back(c3);
-	invec.push_back(e3);
-	invec.push_back(g3);
+	invec.push_back(c2);
+	invec.push_back(e2);
+	invec.push_back(g2);
 	Chord chord;
 	chord.dropOctave();
 	ASSERT_EQ(invec, chord.pitches);
-	for (int i = 3; i > 0; i--) {
+	for (int i = 2; i > 0; i--) {
 		ASSERT_TRUE(chord.dropOctave());
 	}
 	ASSERT_FALSE(chord.dropOctave());
@@ -155,9 +134,9 @@ TEST(chordTest, dropOctaveTest) {
 
 TEST(chordTest, inversionTest) {
 	std::vector<char> invec;
-	invec.push_back(e4);
-	invec.push_back(g4);
-	invec.push_back(c5);
+	invec.push_back(e3);
+	invec.push_back(g3);
+	invec.push_back(c4);
 	Chord chord;
 	chord.invert();
 	ASSERT_EQ(invec, chord.pitches);

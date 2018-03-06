@@ -8,7 +8,7 @@
 #define EVENT_H
 
 struct Event {
-
+	virtual ~Event() = default;
 };
 
 #endif /* EVENT_H */

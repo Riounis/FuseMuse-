@@ -317,5 +317,19 @@ const int f = 5;
 const int ff = 6;
 const int fff = 7;
 
+// Chords
+const std::vector<int> c_major = {c4, e4, g4};
+const std::vector<int> c_minor = {c4, ef4, g4};
+const std::vector<int> c_sus2 = {c4, d4, g4};
+const std::vector<int> c_sus4 = {c4, f4, g4};
+const std::vector<int> c_major_7 = {c4, e4, g4, b4};
+const std::vector<int> c_minor_7 = {c4, ef4, g4, bf4};
+const std::vector<int> cs_major = {cs4, f4, gs4};
+const std::vector<int> cs_minor = {cs4, e4, gs4};
+const std::vector<int> cs_sus2 = {cs4, ds4, gs4};
+const std::vector<int> cs_sus4 = {cs4, fs4, gs4};
+const std::vector<int> cs_major_7 = {cs4, f4, gs4, c4};
+const std::vector<int> cs_minor_7 = {cs4, e4, gs4, b4};
+
 #endif /* CONSTANTS_H */
 

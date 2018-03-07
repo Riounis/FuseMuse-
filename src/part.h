@@ -17,75 +17,29 @@
 
 class Part {
 public:
-    auto begin() { return events.begin(); }
-	auto end() { return events.end(); }
-	auto erase(auto it) { 
-	    length -= it->duration;
+	Part() : events(0), length(0) {}
+	std::vector<Event>::iterator begin() { return events.begin(); }
+	std::vector<Event>::iterator end() { return events.end(); }
+	std::vector<Event>::iterator erase(std::vector<Event>::iterator it) {
+		Event *e = &*it;
+		Note *n = nullptr;
+		Chord *c = nullptr;
+		if (n = dynamic_cast<Note*>(e)) {
+			length -= n->duration;
+		}
+		else if (c = dynamic_cast<Chord*>(e)) {
+			length -= n->duration;
+		}
 		return events.erase(it);
 	}
-	void insertNote(auto it, Note n) {
-		events.insert(it, n);
-		length += n.duration;
-	}
-	void insertChord(auto it, Chord c) {
-		events.insert(it, c);
-		length += c.duration;
-	}
-	void insertDynamic(auto it, Dynamics d) {
-		events.insert(it, d);
-	}
-	void appendNote(Note n) {
-		events.push_back(n);
-		length += n.duration;
-	}
-	void appendChord(Chord c) {
-		events.push_back(c);
-		length += c.duration;
-	}
-	void appendDynamic(Dynamics d) {
-		events.push_back(d);
-	}
-	Dynamics getDynamicsAtPosition(int pos) {
-		int currentPosition = 0;
-		auto it = begin();
-		auto it2 = begin();
-		auto iter = end();
-		while (currentPosition <= pos && it != iter) {
-			currentPosition += it->duration;
-			it++;
-		}
-		it--;
-		while (it->duration != 0 && it != it2) {
-		    it--;
-		}
-		// need dynamic casting here
-		return it*;
-	}
-	std::vector<char> getPitchesAtPosition(int pos) {
-		int currentPosition = 0;
-		auto it = begin();
-		auto iter = end();
-		while (currentPosition <= pos && it != iter) {
-			currentPosition += it->duration;
-			it++;
-		}
-		it--;
-		Note n = dynamic_cast<Note>(it*);
-		if (!n) {
-			Chord c = dynamic_cast<Chord>(it*);
-			return c.pitches;
-		}
-		else {
-			std::vector<char> pitches;
-			pitches.push_back(n.pitch);
-			return pitches;
-		}
-		return NULL;
-	}
+	void appendNote(Note n) { events.push_back(n); length += n.duration; }
+	void appendChord(Chord c) { events.push_back(c); length += c.duration; }
+	void appendDynamic(Dynamics d) { events.push_back(d); }
 	int getLength() { return length; }
+	int getNumEvents() { return events.size(); }
 private:
 	std::vector<Event> events;
 	int length;
-}
+};
 
 #endif /* PART_H */

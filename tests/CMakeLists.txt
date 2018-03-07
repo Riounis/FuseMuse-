@@ -33,7 +33,7 @@ if (CMAKE_VERSION VERSION_LESS 2.8.11)
 endif()
 
 # Now simply link against gtest or gtest_main as needed. Eg
-add_executable(testmain testmain.cpp notetest.cpp compositionmetricstest.cpp chordtest.cpp dynamicstest.cpp eventinheritancetest.cpp)
+add_executable(testmain testmain.cpp notetest.cpp compositionmetricstest.cpp chordtest.cpp dynamicstest.cpp eventinheritancetest.cpp parttest.cpp)
 include_directories(../src)
 target_link_libraries(testmain gtest_main fmpp)
 add_test(NAME testmain COMMAND testmain)

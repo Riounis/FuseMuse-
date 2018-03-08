@@ -441,7 +441,29 @@ TEST(partTest, getCurrentDynamicsInvalidTest) {
 }
 
 TEST(partTest, getDynamicsAtPositionTest) {
-	FAIL();
+	Part part;
+	Dynamics dynamic(mf);
+	Note note(c4, eighth_note);
+	Note note2(d4, eighth_note);
+	Note note3(e4, eighth_note);
+	Note note4(f4, eighth_note);
+	Note note5(g4, eighth_note);
+	Dynamics dynamic2(f);
+	Note note6(a4, eighth_note);
+	Note note7(b4, eighth_note);
+	part.appendDynamic(&dynamic);
+	part.appendNote(&note);
+	part.appendNote(&note2);
+	part.appendNote(&note3);
+	part.appendNote(&note4);
+	part.appendNote(&note5);
+	part.appendDynamic(&dynamic2);
+	part.appendNote(&note6);
+	part.appendNote(&note7);
+	ASSERT_EQ(mf, part.getDynamicsAtPosition(0).volume);
+	ASSERT_EQ(mf, part.getDynamicsAtPosition(53).volume);
+	ASSERT_EQ(mf, part.getDynamicsAtPosition(96).volume);
+	ASSERT_EQ(f, part.getDynamicsAtPosition(294).volume);
 }
 
 TEST(partTest, getPitchesAtPositionTest) {

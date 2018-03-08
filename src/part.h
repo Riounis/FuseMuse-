@@ -46,6 +46,8 @@ public:
 	void appendNote(Note *n) { events.push_back(n); length += n->duration; }
 	void appendChord(Chord *c) { events.push_back(c); length += c->duration; }
 	void appendDynamic(Dynamics *d) { events.push_back(d); }
+	int getLength() { return length; }
+	int getNumEvents() { return events.size(); }
 	Dynamics getCurrentDynamics(std::vector<Event*>::iterator it) {
 		std::vector<Event*>::iterator start = begin();
 		while (true) {
@@ -61,8 +63,30 @@ public:
 			it--;
 		}
 	}
-	int getLength() { return length; }
-	int getNumEvents() { return events.size(); }
+	Dynamics getDynamicsAtPosition(int pos) {
+		if (pos >= length) {
+			return getCurrentDynamics(end());
+		}
+		else {
+			int tempPos = 0;
+			std::vector<Event*>::iterator iter = begin();
+			while(tempPos < pos && iter != end()) {
+				Event *e = *iter;
+				Note *n = nullptr;
+				Chord *c = nullptr;
+				if (n = dynamic_cast<Note*>(e)) {
+					tempPos += n->duration;
+				}
+				else if (c = dynamic_cast<Chord*>(e)) {
+					tempPos += c->duration;
+				}
+				if (tempPos >= pos) {
+					return getCurrentDynamics(iter);
+				}
+				iter++;
+			}
+		}
+	}
 private:
 	std::vector<Event*> events;
 	int length;

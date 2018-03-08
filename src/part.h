@@ -43,6 +43,20 @@ public:
 	void insertDynamic(std::vector<Event*>::iterator it, Dynamics *d) {
 		events.insert(it, d);
 	}
+	void append(Event *e) {
+		Note *n = nullptr;
+		Chord *c = nullptr;
+		Dynamics *d = nullptr;
+		if (n = dynamic_cast<Note*>(e)) {
+			appendNote(n);
+		}
+		else if (c = dynamic_cast<Chord*>(e)) {
+			appendChord(c);
+		}
+		else if (d = dynamic_cast<Dynamics*>(e)) {
+			appendDynamic(d);
+		}
+	}
 	void appendNote(Note *n) { events.push_back(n); length += n->duration; }
 	void appendChord(Chord *c) { events.push_back(c); length += c->duration; }
 	void appendDynamic(Dynamics *d) { events.push_back(d); }
@@ -85,6 +99,60 @@ public:
 				}
 				iter++;
 			}
+		}
+	}
+	std::vector<char> getCurrentPitches(std::vector<Event*>::iterator it) {
+		while (true) {
+			Event *e = *it;
+			Dynamics *d = nullptr;
+			if (d = dynamic_cast<Dynamics*>(e)) {
+				if (it == begin()) {
+					std::vector<char> drop;
+					return drop;
+				}
+				it--;
+			}
+			else {
+				Note *n = nullptr;
+				Chord *c = nullptr;
+				if (n = dynamic_cast<Note*>(e)) {
+					std::vector<char> ret;
+					ret.push_back(n->pitch);
+					return ret;
+				}
+				else if (c = dynamic_cast<Chord*>(e)) {
+					return c->pitches;
+				}
+			}
+		}
+	}
+	std::vector<char> getPitchesAtPosition(int pos) {
+		if (pos >= length) {
+			std::vector<Event*>::iterator iter = begin();
+			while (iter != end()) {
+				iter++;
+			}
+			return getCurrentPitches(iter);
+		}
+		else {
+			int tempPos = 0;
+			std::vector<Event*>::iterator iter = begin();
+			while(tempPos < pos && iter != end()) {
+				Event *e = *iter;
+				Note *n = nullptr;
+				Chord *c = nullptr;
+				if (n = dynamic_cast<Note*>(e)) {
+					tempPos += n->duration;
+				}
+				else if (c = dynamic_cast<Chord*>(e)) {
+					tempPos += c->duration;
+				}
+				if (tempPos >= pos) {
+					return getCurrentPitches(iter);
+				}
+				iter++;
+			}
+			return getCurrentPitches(begin());
 		}
 	}
 private:

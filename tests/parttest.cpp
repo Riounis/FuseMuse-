@@ -172,6 +172,34 @@ TEST(partTest, appendMultiNoteDynamicTest) {
 	}
 }
 
+TEST(partTest, appendTest) {
+	Part part;
+	Note note;
+	Chord chord;
+	Dynamics dynamics;
+	part.append(&note);
+	part.append(&chord);
+	part.append(&dynamics);
+	ASSERT_EQ(3, part.getNumEvents());
+	std::vector<Event*>::iterator it = part.begin();
+	for (int i = 0; i < part.getNumEvents(); i++) {
+		Event *e = *it;
+		Note *n = nullptr;
+		Chord *c = nullptr;
+		Dynamics *d = nullptr;
+		if (n = dynamic_cast<Note*>(e)) {
+			ASSERT_EQ(0, i);
+		}
+		else if (c = dynamic_cast<Chord*>(e)) {
+			ASSERT_EQ(1, i);
+		}
+		else if (d = dynamic_cast<Dynamics*>(e)) {
+			ASSERT_EQ(2, i);
+		}
+		it++;
+	}
+}
+
 TEST(partTest, iteratorEraseTest) {
 	Part part;
 	Note note(fs3, quarter_note);
@@ -466,10 +494,70 @@ TEST(partTest, getDynamicsAtPositionTest) {
 	ASSERT_EQ(f, part.getDynamicsAtPosition(294).volume);
 }
 
-TEST(partTest, getPitchesAtPositionTest) {
-	FAIL();
+TEST(partTest, getCurrentPitchesNoteTest) {
+	Part part;
+	Note note(c4, eighth_note);
+	Note note2(d4, eighth_note);
+	Note note3(e4, eighth_note);
+	Note note4(f4, eighth_note);
+	part.appendNote(&note);
+	part.appendNote(&note2);
+	part.appendNote(&note3);
+	part.appendNote(&note4);
+	std::vector<Event*>::iterator it = part.begin();
+	it++;
+	it++;
+	std::vector<char> pitches;
+	pitches.push_back(e4);
+	ASSERT_EQ(pitches, part.getCurrentPitches(it));
 }
 
-TEST(partTest, getCurrentPitchesTest) {
-	FAIL();
+TEST(partTest, getCurrentPitchesChordTest) {
+	Part part;
+	Chord chord(e_major_chord, eighth_note);
+	Note note(f4, half_note);
+	Chord chord2(f_minor_chord, quarter_note);
+	Chord chord3(gs_sus2_chord, dotted_quarter_note);
+	part.appendChord(&chord);
+	part.appendNote(&note);
+	part.appendChord(&chord2);
+	part.appendChord(&chord3);
+	std::vector<Event*>::iterator it = part.begin();
+	ASSERT_EQ(chord.pitches, part.getCurrentPitches(it));
+	std::vector<char> temp;
+	temp.push_back(f4);
+	it++;
+	ASSERT_EQ(temp, part.getCurrentPitches(it));
+	it++;
+	ASSERT_EQ(chord2.pitches, part.getCurrentPitches(it));
+	it++;
+	ASSERT_EQ(chord3.pitches, part.getCurrentPitches(it));
 }
+
+/**TEST(partTest, getPitchesAtPositionTest) {
+	Part part;
+	Note note(c4, eighth_note);
+	Note note2(d4, eighth_note);
+	Note note3(e4, eighth_note);
+	Note note4(f4, eighth_note);
+	Note note5(g4, eighth_note);
+	Note note6(a4, one_twenty_eighth_note);
+	Note note7(b4, eighth_note);
+	part.appendNote(&note);
+	part.appendNote(&note2);
+	part.appendNote(&note3);
+	part.appendNote(&note4);
+	part.appendNote(&note5);
+	part.appendNote(&note6);
+	part.appendNote(&note7);
+	std::vector<char> a = {c4};
+	std::vector<char> b = {d4};
+	std::vector<char> c = {d4};
+	std::vector<char> d = {e4};
+	std::vector<char> e = {b4};
+	ASSERT_EQ(a, part.getPitchesAtPosition(0));
+	ASSERT_EQ(b, part.getPitchesAtPosition(53));
+	ASSERT_EQ(c, part.getPitchesAtPosition(96));
+	ASSERT_EQ(d, part.getPitchesAtPosition(97));
+	ASSERT_EQ(e, part.getPitchesAtPosition(294));
+}*/

@@ -63,9 +63,10 @@ public:
 	int getLength() { return length; }
 	int getNumEvents() { return events.size(); }
 	Dynamics getCurrentDynamics(std::vector<Event*>::iterator it) {
-		// Go backwards until we find a dynamics object or hit the end
-		// of the vector, then return the dynamic object we find or
-		// if we fail to find, return a default dynamics object
+		if (events.size() == 0) {
+			Dynamics dynamics;
+			return dynamics;
+		}
 		std::vector<Event*>::iterator start = begin();
 		while (true) {
 			Event *e = *it;
@@ -84,15 +85,28 @@ public:
 		return getCurrentDynamics(getIteratorAtPosition(pos));
 	}
 	std::vector<char> getCurrentPitches(std::vector<Event*>::iterator it) {
+		if (events.size() == 0) {
+			std::vector<char> drop;
+			return drop;
+		}
+		bool up = false;
 		while (true) {
 			Event *e = *it;
 			Dynamics *d = nullptr;
 			if (d = dynamic_cast<Dynamics*>(e)) {
-				if (it == begin()) {
+				if (it == begin() && !listContainsPitches()) {
 					std::vector<char> drop;
 					return drop;
 				}
-				it--;
+				else if (it == begin()) {
+					up = true;
+				}
+				if (up) {
+					it++;
+				}
+				else {
+					it--;
+				}
 			}
 			else {
 				Note *n = nullptr;
@@ -121,6 +135,7 @@ private:
 		else if (pos >= length) {
 			std::vector<Event*>::iterator it = begin();
 			while (it != end()) { it++; }
+			it --;
 			return it;
 		}
 		else {
@@ -142,6 +157,12 @@ private:
 				it++;
 			}
 		}
+	}
+	bool listContainsPitches() {
+		if (length > 0) {
+			return true;
+		}
+		return false;
 	}
 };
 

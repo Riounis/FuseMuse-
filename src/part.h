@@ -28,7 +28,7 @@ public:
 			length -= n->duration;
 		}
 		else if (c = dynamic_cast<Chord*>(e)) {
-			length -= n->duration;
+			length -= c->duration;
 		}
 		return events.erase(it);
 	}
@@ -63,6 +63,9 @@ public:
 	int getLength() { return length; }
 	int getNumEvents() { return events.size(); }
 	Dynamics getCurrentDynamics(std::vector<Event*>::iterator it) {
+		// Go backwards until we find a dynamics object or hit the end
+		// of the vector, then return the dynamic object we find or
+		// if we fail to find, return a default dynamics object
 		std::vector<Event*>::iterator start = begin();
 		while (true) {
 			Event *e = *it;
@@ -78,28 +81,7 @@ public:
 		}
 	}
 	Dynamics getDynamicsAtPosition(int pos) {
-		if (pos >= length) {
-			return getCurrentDynamics(end());
-		}
-		else {
-			int tempPos = 0;
-			std::vector<Event*>::iterator iter = begin();
-			while(tempPos < pos && iter != end()) {
-				Event *e = *iter;
-				Note *n = nullptr;
-				Chord *c = nullptr;
-				if (n = dynamic_cast<Note*>(e)) {
-					tempPos += n->duration;
-				}
-				else if (c = dynamic_cast<Chord*>(e)) {
-					tempPos += c->duration;
-				}
-				if (tempPos >= pos) {
-					return getCurrentDynamics(iter);
-				}
-				iter++;
-			}
-		}
+		return getCurrentDynamics(getIteratorAtPosition(pos));
 	}
 	std::vector<char> getCurrentPitches(std::vector<Event*>::iterator it) {
 		while (true) {
@@ -127,18 +109,25 @@ public:
 		}
 	}
 	std::vector<char> getPitchesAtPosition(int pos) {
-		if (pos >= length) {
-			std::vector<Event*>::iterator iter = begin();
-			while (iter != end()) {
-				iter++;
-			}
-			return getCurrentPitches(iter);
+		return getCurrentPitches(getIteratorAtPosition(pos));
+	}
+private:
+	std::vector<Event*> events;
+	int length;
+	std::vector<Event*>::iterator getIteratorAtPosition(int pos) {
+		if (pos <= 0) {
+			return begin();
+		}
+		else if (pos >= length) {
+			std::vector<Event*>::iterator it = begin();
+			while (it != end()) { it++; }
+			return it;
 		}
 		else {
+			std::vector<Event*>::iterator it = begin();
 			int tempPos = 0;
-			std::vector<Event*>::iterator iter = begin();
-			while(tempPos < pos && iter != end()) {
-				Event *e = *iter;
+			while (tempPos < pos) {
+				Event *e = *it;
 				Note *n = nullptr;
 				Chord *c = nullptr;
 				if (n = dynamic_cast<Note*>(e)) {
@@ -148,16 +137,12 @@ public:
 					tempPos += c->duration;
 				}
 				if (tempPos >= pos) {
-					return getCurrentPitches(iter);
+					return it;
 				}
-				iter++;
+				it++;
 			}
-			return getCurrentPitches(begin());
 		}
 	}
-private:
-	std::vector<Event*> events;
-	int length;
 };
 
 #endif /* PART_H */

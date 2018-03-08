@@ -30,6 +30,9 @@ TEST(partTest, appendNoteTest) {
 	else if (d = dynamic_cast<Dynamics*>(e)) {
 		ASSERT_FALSE(true);
 	}
+	else {
+		FAIL();
+	}
 	ASSERT_EQ(eighth_note, part.getLength());
 }
 
@@ -51,6 +54,9 @@ TEST(partTest, appendChordTest) {
 	else if (d = dynamic_cast<Dynamics*>(e)) {
 		ASSERT_FALSE(true);
 	}
+	else {
+		FAIL();
+	}
 	ASSERT_EQ(half_note, part.getLength());
 }
 
@@ -71,6 +77,9 @@ TEST(partTest, appendDynamicTest) {
 	}
 	else if (d = dynamic_cast<Dynamics*>(e)) {
 		ASSERT_EQ(mf, d->volume);
+	}
+	else {
+		FAIL();
 	}
 	ASSERT_EQ(0, part.getLength());
 }
@@ -105,6 +114,9 @@ TEST(partTest, appendAllEventsTest) {
 		else if (d = dynamic_cast<Dynamics*>(e)) {
 			ASSERT_EQ(1, i);
 			ASSERT_EQ(mf, d->volume);
+		}
+		else {
+			FAIL();
 		}
 		it++;
 	}
@@ -153,6 +165,9 @@ TEST(partTest, appendMultiNoteDynamicTest) {
 				FAIL();
 			}
 		}
+		else {
+			FAIL();
+		}
 		it++;
 	}
 }
@@ -165,10 +180,13 @@ TEST(partTest, iteratorEraseTest) {
 	part.appendNote(note);
 	part.appendNote(note2);
 	part.appendNote(note3);
+	ASSERT_EQ(3*quarter_note, part.getLength());
+	ASSERT_EQ(3, part.getNumEvents());
 	std::vector<Event>::iterator it = part.begin();
 	it++;
 	part.erase(it);
 	it--;
+	ASSERT_EQ(2*quarter_note, part.getLength());
 	ASSERT_EQ(2, part.getNumEvents());
 	for (int i = 0; i < part.getNumEvents(); i++) {
 		Event *e = &*it;
@@ -187,6 +205,9 @@ TEST(partTest, iteratorEraseTest) {
 			FAIL();
 		}
 		else if (d = dynamic_cast<Dynamics*>(e)) {
+			FAIL();
+		}
+		else {
 			FAIL();
 		}
 		it++;
@@ -235,6 +256,9 @@ TEST(partTest, insertNoteTest) {
 		else if (d = dynamic_cast<Dynamics*>(e)) {
 			FAIL();
 		}
+		else {
+			FAIL();
+		}
 		it++;
 	}
 }
@@ -271,6 +295,9 @@ TEST(partTest, insertChordTest) {
 			}
 		}
 		else if (d = dynamic_cast<Dynamics*>(e)) {
+			FAIL();
+		}
+		else {
 			FAIL();
 		}
 		it++;
@@ -310,6 +337,9 @@ TEST(partTest, insertDynamicTest) {
 			else if (i == 2) {
 				ASSERT_EQ(f, d->volume);
 			}
+		}
+		else {
+			FAIL();
 		}
 		it++;
 	}
@@ -354,6 +384,9 @@ TEST(partTest, insertMixedListTest) {
 			if (i == 0) {
 				ASSERT_EQ(mf, d->volume);
 			}
+		}
+		else {
+			FAIL();
 		}
 		it++;
 	}
@@ -403,7 +436,7 @@ TEST(partTest, getCurrentDynamicsInvalidTest) {
 	
 	std::vector<Event>::iterator it = part.begin();
 	// increment a few notes into part.
-	it++++++;
+	for (int i = 0; i < 3; i++) { it++; }
 	ASSERT_EQ(mp, part.getCurrentDynamics(it).volume);
 }
 

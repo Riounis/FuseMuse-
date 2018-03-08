@@ -18,10 +18,10 @@
 class Part {
 public:
 	Part() : events(0), length(0) {}
-	std::vector<Event>::iterator begin() { return events.begin(); }
-	std::vector<Event>::iterator end() { return events.end(); }
-	std::vector<Event>::iterator erase(std::vector<Event>::iterator it) {
-		Event *e = &*it;
+	std::vector<Event*>::iterator begin() { return events.begin(); }
+	std::vector<Event*>::iterator end() { return events.end(); }
+	std::vector<Event*>::iterator erase(std::vector<Event*>::iterator it) {
+		Event *e = *it;
 		Note *n = nullptr;
 		Chord *c = nullptr;
 		if (n = dynamic_cast<Note*>(e)) {
@@ -32,24 +32,24 @@ public:
 		}
 		return events.erase(it);
 	}
-	void insertNote(std::vector<Event>::iterator it, Note n) {
+	void insertNote(std::vector<Event*>::iterator it, Note *n) {
 		events.insert(it, n);
-		length += n.duration;
+		length += n->duration;
 	}
-	void insertChord(std::vector<Event>::iterator it, Chord c) {
+	void insertChord(std::vector<Event*>::iterator it, Chord *c) {
 		events.insert(it, c);
-		length += c.duration;
+		length += c->duration;
 	}
-	void insertDynamic(std::vector<Event>::iterator it, Dynamics d) {
+	void insertDynamic(std::vector<Event*>::iterator it, Dynamics *d) {
 		events.insert(it, d);
 	}
-	void appendNote(Note n) { events.push_back(n); length += n.duration; }
-	void appendChord(Chord c) { events.push_back(c); length += c.duration; }
-	void appendDynamic(Dynamics d) { events.push_back(d); }
-	Dynamics getCurrentDynamics(std::vector<Event>::iterator it) {
-		std::vector<Event>::iterator start = begin();
+	void appendNote(Note *n) { events.push_back(n); length += n->duration; }
+	void appendChord(Chord *c) { events.push_back(c); length += c->duration; }
+	void appendDynamic(Dynamics *d) { events.push_back(d); }
+	Dynamics getCurrentDynamics(std::vector<Event*>::iterator it) {
+		std::vector<Event*>::iterator start = begin();
 		while (true) {
-			Event *e = &*it;
+			Event *e = *it;
 			Dynamics *d = nullptr;
 			if (d = dynamic_cast<Dynamics*>(e)) {
 				return *d;
@@ -64,7 +64,7 @@ public:
 	int getLength() { return length; }
 	int getNumEvents() { return events.size(); }
 private:
-	std::vector<Event> events;
+	std::vector<Event*> events;
 	int length;
 };
 

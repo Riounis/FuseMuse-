@@ -35,5 +35,6 @@ endif()
 # Now simply link against gtest or gtest_main as needed. Eg
 add_executable(testmain testmain.cpp notetest.cpp compositionmetricstest.cpp chordtest.cpp dynamicstest.cpp eventinheritancetest.cpp parttest.cpp)
 include_directories(../src)
+include_directories(../src/libfm)
 target_link_libraries(testmain gtest_main fmpp)
 add_test(NAME testmain COMMAND testmain)

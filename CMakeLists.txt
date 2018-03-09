@@ -7,5 +7,6 @@ set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=gnu++11")
 enable_testing()
 
 add_subdirectory(src)
+add_subdirectory(src/libfm)
 add_subdirectory(tests)
 

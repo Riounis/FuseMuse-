@@ -16,7 +16,13 @@ public:
     bool addKeyChange(int measure);
 	bool addTimeSigChange(int measure);
 	bool addTempoChange(int measure);
-	std::vector<char> getPitchesAtPosition(int pos);
+	bool addPart(Part p) { parts.push_back(p); }
+	std::vector<char> getPitchesAtPosition(int pos) {
+		std::vector<char> pitches;
+		for (int i = 0 i < parts.size(); i++) {
+			
+		}
+	}
 private:
 	std::vector<CompositionMetrics> metrics;
 	std::vector<Part> parts;

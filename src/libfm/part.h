@@ -125,6 +125,47 @@ public:
 	std::vector<char> getPitchesAtPosition(int pos) {
 		return getCurrentPitches(getIteratorAtPosition(pos));
 	}
+	int getPositionOf(std::vector<Event*>::iterator it) {
+		int pos = 0;
+		while (it != begin()) {
+			it--;
+			Event *e = *it;
+			Note *n = nullptr;
+			Chord *c = nullptr;
+			if (n = dynamic_cast<Note*>(e)) {
+				pos += n->duration;
+			}
+			else if (c = dynamic_cast<Chord*>(e)) {
+				pos += c->duration;
+			}
+		}
+		return pos;
+	}
+	int getPositionAfter(std::vector<Event*>::iterator it) {
+		int pos = 0;
+		Event *e = *it;
+		Note *n = nullptr;
+		Chord *c = nullptr;
+		if (n = dynamic_cast<Note*>(e)) {
+			pos += n->duration;
+		}
+		else if (c = dynamic_cast<Chord*>(e)) {
+			pos += c->duration;
+		}
+		while (it != begin()) {
+			it--;
+			Event *e = *it;
+			Note *n = nullptr;
+			Chord *c = nullptr;
+			if (n = dynamic_cast<Note*>(e)) {
+				pos += n->duration;
+			}
+			else if (c = dynamic_cast<Chord*>(e)) {
+				pos += c->duration;
+			}
+		}
+		return pos;
+	}
 private:
 	std::vector<Event*> events;
 	int length;

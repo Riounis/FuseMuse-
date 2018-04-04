@@ -7,6 +7,12 @@
 #include "part.h"
 #include "gtest/gtest.h"
 
+TEST(partTest, setNameTest) {
+	Part part;
+	part.setName("name");
+	ASSERT_EQ("name", part.getName());
+}
+
 TEST(partTest, emptyPartTest) {
 	Part part;
 	ASSERT_EQ(0, part.getLength());

@@ -9,6 +9,7 @@
 
 #include <vector>
 
+/** FuseMuse Pitches */
 // Octave 0
 const int c0 = 0;
 const int cs0 = 1;
@@ -243,6 +244,7 @@ const int f10 = 126;
 // Rest
 const int rest = 127;
 
+/** FuseMuse Durations */
 // One-Hundred Twenty-Eighth Note Variants
 const int triplet_one_twenty_eighth_note = 2;
 const int one_twenty_eighth_note = 3;
@@ -296,6 +298,7 @@ const int triplet_double_dotted_whole_note = 448;
 const int dotted_whole_note = 576;
 const int double_dotted_whole_note = 672;
 
+/** Common Scales */
 // Common Scale Intervals
 const std::vector<char> ionian_intervals = {2, 2, 1, 2, 2, 2, 1};
 const std::vector<char> dorian_intervals = {2, 1, 2, 2, 2, 1, 2};
@@ -307,6 +310,7 @@ const std::vector<char> locrian_intervals = {1, 2, 2, 1, 2, 2, 2};
 const std::vector<char> major_intervals = ionian_intervals;
 const std::vector<char> minor_intervals = aeolian_intervals;
 
+/** Dynamics */
 // Dynamics
 const int ppp = 0;
 const int pp = 1;
@@ -317,6 +321,7 @@ const int f = 5;
 const int ff = 6;
 const int fff = 7;
 
+/** Common Chords */
 // Chords
 const std::vector<char> c_major_chord = {c3, e3, g3};
 const std::vector<char> c_minor_chord = {c3, ef3, g3};

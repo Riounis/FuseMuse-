@@ -11,7 +11,21 @@
 #include <vector>
 #include "constants.h"
 
+/**
+ * A TimeSignature represents the number of beats per measure and which note
+ * gets the beat.
+ */
 struct TimeSignature {
+	
+	/**
+	 * Constructs a TimeSignature with the given number of beats per measure
+	 * and which note gets the beat. By default, they are 4 beats per measure,
+	 * and the quarter note gets the beat.
+	 *
+	 * @param num The number of beats per measure.
+	 * @param denom Which note gets the beat (4 for quarter note, 8 for eighth
+	 * 		note, etc...)
+	 */
     TimeSignature(char num = 4, char denom = 4) : num(num), denom(denom) {
 		// If the denominator is not a power of 2
 		if ((denom & (denom - 1)) != 0) {
@@ -23,8 +37,22 @@ struct TimeSignature {
     char denom;
 };
 
+/**
+ * A Key represents a scale, or group of pitches, which makes up the pitches used
+ * in a song. This Key object contains the key quality (whether it's major or minor),
+ * the key signature (number of sharps or flats in conventional western music), but it
+ * can also contain arbitrarily constructed scales.
+ */
 class Key {
 public:
+
+	/**
+	 * Constructs a Key which defaults to C major.
+	 *
+	 * @param tonic The tonic note of the scale.
+	 * @param intervals A vector filled with numbers of half steps between steps in
+	 * 		the scale.
+	 */
     Key(int tonic = c3, std::vector<char> intervals = major_intervals) :
             tonic(tonic), intervals(intervals) {
         char pitch = tonic;
@@ -37,8 +65,27 @@ public:
             scale.push_back(pitch);
         }
     }
+	
+	/**
+	 * Returns a list of notes in the scale in this Key.
+	 *
+	 * @return A vector containing the pitches in this scale.
+	 */
 	std::vector<char> getScale() { return scale; }
+	
+	/**
+	 * Returns a list of intervals in between notes in the scale in this Key.
+	 *
+	 * @return A vector containing the intervals in this scale.
+	 */
 	std::vector<char> getIntervals() { return intervals; }
+	
+	/**
+	 * Returns the number of sharps or flats in this key signature.
+	 *
+	 * @return The number of sharps or flats in this key signature (- for flats,
+	 * 		+ for sharps)
+	 */
 	int getKeySignature() {
 		if (intervals != major_intervals && intervals != minor_intervals) {
 			return 0;
@@ -72,6 +119,12 @@ public:
 			}
 		}
 	}
+	
+	/**
+	 * Returns whether the key is major or minor.
+	 *
+	 * @return 0 for Major, 1 for Minor.
+	 */
 	int getKeyQuality() {
 		if (tonic + 4 == scale[2]) {
 			return 0;
@@ -83,6 +136,13 @@ public:
 			return 2;
 		}
 	}
+	
+	/**
+	 * Returns whether the given pitch is in the scale.
+	 *
+	 * @param pitch The pitch to compare to the pitches in the scale.
+	 * @return Whether the pitch is in the scale.
+	 */
 	bool isInScale(char pitch) {
 		char pmod = pitch % 12;
 		for (int i = 0; i < scale.size(); i++) {
@@ -92,6 +152,14 @@ public:
 		}
 		return false;
 	}
+	
+	/**
+	 * Returns whether the pitch given is the tonic, 2nd, 3rd, etc... in the
+	 * scale.
+	 *
+	 * @param pitch The pitch to find the position of in the scale.
+	 * @return The position of the pitch in the scale. (1 if tonic, 2nd, 3rd, etc.)
+	 */
 	int positionInScale(char pitch) {
 		char pmod = pitch % 12;
 		for (int i = 0; i < scale.size(); i++) {
@@ -101,6 +169,13 @@ public:
 		}
 		return -1;
 	}
+	
+	/**
+	 * Returns the next pitch up in the scale above the given pitch.
+	 *
+	 * @param pitch The pitch to get the pitch above on the scale.
+	 * @return The next pitch up in the scale.
+	 */
 	int nextPitchInScale(char pitch) {
 		char numOctaves = pitch / 12;
 		char pmod = pitch % 12;
@@ -119,6 +194,14 @@ public:
 		}
 		return scale[indexOfNext] % 12 + numOctaves * 12;
 	}
+	
+	/**
+	 * Returns the nth pitch in the scale.
+	 *
+	 * @param n The index of the pitch in the scale (1 is tonic, 2 is 2nd etc)
+	 * @return The pitch in the scale at the given index, or -1 if there is no
+	 * 		pitch at the given index.
+	 */
 	char getNthPitch(int n) {
 		if (n < scale.size() && n >= 0) {
 			return scale[n-1];
@@ -127,7 +210,20 @@ public:
 			return -1;
 		}
 	}
+	
+	/**
+	 * Returns the tonic pitch of the scale.
+	 *
+	 * @return The tonic pitch of the scale.
+	 */
 	char getTonic() { return tonic; }
+	
+	/**
+	 * Returns the second pitch of the scale.
+	 *
+	 * @return The second pitch of the scale, or -1 if the scale has 1 or fewer
+	 * 		notes.
+	 */
 	char get2nd() {
 		if (scale.size() >= 2) {
 			return scale[1];
@@ -136,6 +232,13 @@ public:
 			return -1;
 		}
 	}
+	
+	/**
+	 * Returns the third pitch of the scale.
+	 *
+	 * @return The third pitch of the scale, or -1 if the scale has 2 or fewer
+	 * 		notes.
+	 */
 	char get3rd() {
 		if (scale.size() >= 3) {
 			return scale[2];
@@ -144,6 +247,13 @@ public:
 			return -1;
 		}
 	}
+	
+	/**
+	 * Returns the fourth pitch of the scale.
+	 *
+	 * @return The fourth pitch of the scale, or -1 if the scale has 3 or fewer
+	 * 		notes.
+	 */
 	char get4th() {
 		if (scale.size() >= 4) {
 			return scale[3];
@@ -152,6 +262,13 @@ public:
 			return -1;
 		}
 	}
+	
+	/**
+	 * Returns the fifth pitch of the scale.
+	 *
+	 * @return The fifth pitch of the scale, or -1 if the scale has 4 or fewer
+	 * 		notes.
+	 */
 	char get5th() {
 		if (scale.size() >= 5) {
 			return scale[4];
@@ -160,6 +277,13 @@ public:
 			return -1;
 		}
 	}
+	
+	/**
+	 * Returns the sixth pitch of the scale.
+	 *
+	 * @return The sixth pitch of the scale, or -1 if the scale has 5 or fewer
+	 * 		notes.
+	 */
 	char get6th() {
 		if (scale.size() >= 6) {
 			return scale[5];
@@ -168,6 +292,13 @@ public:
 			return -1;
 		}
 	}
+	
+	/**
+	 * Returns the seventh pitch of the scale.
+	 *
+	 * @return The seventh pitch of the scale, or -1 if the scale has 6 or fewer
+	 * 		notes.
+	 */
 	char get7th() {
 		if (scale.size() >= 7) {
 			return scale[6];
@@ -176,6 +307,13 @@ public:
 			return -1;
 		}
 	}
+	
+	/**
+	 * Returns the eighth pitch of the scale.
+	 *
+	 * @return The eighth pitch of the scale, or -1 if the scale has 7 or fewer
+	 * 		notes.
+	 */
 	char get8th() {
 		if (scale.size() >= 8) {
 			return scale[7];
@@ -184,6 +322,13 @@ public:
 			return -1;
 		}
 	}
+	
+	/**
+	 * Returns the ninth pitch of the scale.
+	 *
+	 * @return The ninth pitch of the scale, or -1 if the scale has 8 or fewer
+	 * 		notes.
+	 */
 	char get9th() {
 		if (scale.size() >= 9) {
 			return scale[8];
@@ -192,6 +337,13 @@ public:
 			return -1;
 		}
 	}
+	
+	/**
+	 * Returns the tenth pitch of the scale.
+	 *
+	 * @return The tenth pitch of the scale, or -1 if the scale has 9 or fewer
+	 * 		notes.
+	 */
 	char get10th() {
 		if (scale.size() >= 10) {
 			return scale[9];
@@ -200,6 +352,13 @@ public:
 			return -1;
 		}
 	}
+	
+	/**
+	 * Returns the eleventh pitch of the scale.
+	 *
+	 * @return The eleventh pitch of the scale, or -1 if the scale has 10 or fewer
+	 * 		notes.
+	 */
 	char get11th() {
 		if (scale.size() >= 11) {
 			return scale[10];
@@ -208,6 +367,13 @@ public:
 			return -1;
 		}
 	}
+	
+	/**
+	 * Returns the twelfth pitch of the scale.
+	 *
+	 * @return The twelfth pitch of the scale, or -1 if the scale has 11 or fewer
+	 * 		notes.
+	 */
 	char get12th() {
 		if (scale.size() >= 12) {
 			return scale[11];
@@ -222,12 +388,17 @@ private:
     std::vector<char> scale;
 };
 
+/**
+ * A CompositionMetric is a simple structure to hold Key, TimeSignature, and Tempo
+ * data, as well as a FuseMuse position signifying the CompositionMetrics' position
+ * in its respective Composition.
+ */
 struct CompositionMetrics {
-    CompositionMetrics() : key(), timeSignature(), tempo(80), measure(0) {}
+    CompositionMetrics() : key(), timeSignature(), tempo(80), position(0) {}
     Key key;
     TimeSignature timeSignature;
     unsigned int tempo;
-	int measure;
+	int position;
 };
 
 #endif /* COMPOSITIONMETRICS_H */

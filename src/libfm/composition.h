@@ -85,36 +85,67 @@ public:
 	Composition(): metrics(), parts(), pattern(), patternSegments(), chordProgression(){}
 	
 	/**
+	 * Returns the composition metrics being used at the given position in the composition.
 	 *
+	 * @param pos The position in the composition from which to retrieve composition metrics.
+	 * @return The composition metrics used at the position.
 	 */
 	CompositionMetrics* getCompositionMetricsAtPosition(int pos) {
+		for (int i = metrics.size() - 1; i >= 0; i--) {
+			printf("%d\n", metrics[i]->position);
+			if (pos >= metrics[i]->position) {
+				printf("hello\n");
+				printf("%d\n", metrics[i]->key.getTonic());
+				return metrics[i];
+			}
+		}
 		return NULL;
 	}
 	
 	/**
+	 * Sets the composition metrics at position 0 to the given composition metrics.
 	 *
+	 * @param The composition metrics to use at the start of the composition.
 	 */
 	void setInitialCompositionMetrics(CompositionMetrics *mets) {
-		
+		if (mets->position != 0) {
+			mets->position = 0;
+		}
+		if (metrics.size() == 0) {
+			metrics.push_back(mets);
+		}
+		else {
+			metrics[0] = mets;
+		}
 	}
 	
 	/**
+	 * Sets the key at position 0 of this composition to the given key.
 	 *
+	 * @param initKey The initial key of the composition.
 	 */
 	void setInitialKey(Key initKey) {
 		if (metrics.size() == 0) {
 			CompositionMetrics m;
+			printf("about to set metrics key\n");
 			m.key = initKey;
 			m.position = 0;
 			metrics.push_back(&m);
+			printf("pushing back initial key\n");
+			printf("%d\n", metrics[0]->key.getTonic());
+			printf("%d\n", metrics[0]->position);
 		}
 		else {
+			printf("in metrics size != 0\n");
+			printf("%d\n", metrics[0]->key.getTonic());
 			metrics[0]->key = initKey;
 		}
 	}
 	
 	/**
+	 * Sets the tempo at position 0 of this composition to the given tempo.
 	 *
+	 * @param initTempo The initial tempo of the composition.
 	 */
 	void setInitialTempo(int initTempo) {
 		if (metrics.size() == 0) {
@@ -129,7 +160,10 @@ public:
 	}
 	
 	/**
+	 * Sets the time signature at position 0 of this composition to the given
+	 * time signature.
 	 *
+	 * @param initTimeSig The initial time signature of the composition.
 	 */
 	void setInitialTimeSignature(TimeSignature initTimeSig) {
 		if (metrics.size() == 0) {
@@ -147,6 +181,9 @@ public:
 	 *
 	 */
 	bool addKeyChange(Key newKey, int pos) {
+		if (metrics.size() == 0) {
+			return false;
+		}
 		
 	}
 	
@@ -154,43 +191,59 @@ public:
 	 *
 	 */
 	bool addTempoChange(int newTempo, int pos) {
-		
+		if (metrics.size() == 0) {
+			return false;
+		}
 	}
 	
 	/**
 	 *
 	 */
 	bool addTimeSignatureChange(TimeSignature newTimeSig, int pos) {
-		
+		if (metrics.size() == 0) {
+			return false;
+		}
 	}
 	
 	/**
+	 * Adds a new set of composition metrics to the composition at the given position.
+	 * If the composition has no composition metrics, the new set of composition metrics
+	 * will instead be inserted at position 0.
 	 *
+	 * @param mets A pointer to the composition metrics to be added.
+	 * @return whether the composition metrics were added.
 	 */
 	bool addNewCompositionMetrics(CompositionMetrics *mets) {
-		/**if (metrics.size() == 0) {
-			mets.position = 0;
-			metrics.push_back(&mets);
+		if (metrics.size() == 0) {
+			mets->position = 0;
+			metrics.push_back(mets);
+			return true;
 		}
 		else {
 			std::vector<CompositionMetrics*>::iterator it = metrics.begin();
 			while (it != metrics.end()) {
-				if (it->position == mets.position) {
-					*it->key = mets.key;
-					*it->timeSignature = mets.timeSignature;
-					*it->tempo = mets.tempo;
+				if ((*it)->position == mets->position) {
+					(*it)->key = mets->key;
+					(*it)->timeSignature = mets->timeSignature;
+					(*it)->tempo = mets->tempo;
 					return true;
 				}
-				else if (*it->position > mets.position) {
-					metrics.insert(it, &mets);
+				else if ((*it)->position > mets->position) {
+					if ((*it)->key.getTonic() == mets->key.getTonic() &&
+							(*it)->key.getScale() == mets->key.getScale() &&
+							(*it)->timeSignature.num == mets->timeSignature.num &&
+							(*it)->timeSignature.denom == mets->timeSignature.denom &&
+							(*it)->tempo == mets->tempo) {
+						return false;		
+					}
+					metrics.insert(it, mets);
 					return true;
 				}
 				it++;
 			}
-			metrics.push_back(&mets);
+			metrics.push_back(mets);
 			return true;
-		}*/
-		return true;
+		}
 	}
 	
 	/**
@@ -274,7 +327,7 @@ public:
 	/**
 	 *
 	 */
-	void addToPattern(std::string name) {
+	bool addToPattern(std::string name) {
 		
 	}
 	
@@ -297,6 +350,14 @@ public:
 	
 	// Add tree of PacketParts
 private:
+	int compositionMetricsAtPosition(int pos) {
+		for (int i = 0; i < metrics.size(); i++) {
+			if (metrics[i]->position == pos) {
+				return i;
+			}
+		}
+		return -1;
+	}
 	std::vector<CompositionMetrics*> metrics;
 	std::vector<Part*> parts;
 	std::vector<PatternSegment*> patternSegments;

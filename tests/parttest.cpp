@@ -7,6 +7,12 @@
 #include "part.h"
 #include "gtest/gtest.h"
 
+TEST(partTest, setNameTest) {
+	Part part;
+	part.setName("name");
+	ASSERT_EQ("name", part.getName());
+}
+
 TEST(partTest, emptyPartTest) {
 	Part part;
 	ASSERT_EQ(0, part.getLength());
@@ -652,4 +658,23 @@ TEST(partGetPitchesPositionTest, normalCaseTest) {
 	part.appendDynamic(&dynamic3);
 	ASSERT_EQ(f_sus2_chord, part.getPitchesAtPosition(15));
 	ASSERT_EQ(b_minor_chord, part.getPitchesAtPosition(105));
+}
+
+TEST(partGetPositionIteratorTest, getPositionIteratorTest) {
+	Part part;
+	Note note;
+	Chord chord(a_major_chord, eighth_note);
+	Note note2(c3, sixteenth_note);
+	part.appendNote(&note);
+	part.appendChord(&chord);
+	part.appendNote(&note2);
+	std::vector<Event*>::iterator it = part.begin();
+	ASSERT_EQ(0, part.getPositionOf(it));
+	ASSERT_EQ(quarter_note, part.getPositionAfter(it));
+	it++;
+	ASSERT_EQ(quarter_note, part.getPositionOf(it));
+	ASSERT_EQ(dotted_quarter_note, part.getPositionAfter(it));
+	it++;
+	ASSERT_EQ(dotted_quarter_note, part.getPositionOf(it));
+	ASSERT_EQ(double_dotted_quarter_note, part.getPositionAfter(it));
 }

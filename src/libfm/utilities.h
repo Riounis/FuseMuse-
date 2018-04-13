@@ -9,13 +9,14 @@
 
 #include <exception>
 #include <string>
+#include <nlohmann/json.hpp>
 #include "composition.h"
 
-string fmCompToJSON(Composition comp) {
+nlohmann::json fmCompToJSON(Composition comp) {
 	
 }
 
-Composition jsonToFMComp(string json) {
+Composition jsonToFMComp(nlohmann::json json) {
 	
 }
 

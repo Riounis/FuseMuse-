@@ -202,7 +202,7 @@ TEST(compositionMetricsTest, compositionMetricsDefaultConstructorTest) {
 	ASSERT_EQ(4, comp.timeSignature.denom);
 	// Test the tempo
 	ASSERT_EQ(80, comp.tempo);
-	// Test the measure position
-	ASSERT_EQ(0, comp.measure);
+	// Test the position
+	ASSERT_EQ(0, comp.position);
 }
 

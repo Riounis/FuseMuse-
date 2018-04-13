@@ -126,11 +126,11 @@ public:
 	 */
 	void setInitialKey(Key initKey) {
 		if (metrics.size() == 0) {
-			CompositionMetrics m;
+			CompositionMetrics *m = new CompositionMetrics();
 			printf("about to set metrics key\n");
-			m.key = initKey;
-			m.position = 0;
-			metrics.push_back(&m);
+			m->key = initKey;
+			m->position = 0;
+			metrics.push_back(m);
 			printf("pushing back initial key\n");
 			printf("%d\n", metrics[0]->key.getTonic());
 			printf("%d\n", metrics[0]->position);
@@ -149,10 +149,10 @@ public:
 	 */
 	void setInitialTempo(int initTempo) {
 		if (metrics.size() == 0) {
-			CompositionMetrics m;
-			m.tempo = initTempo;
-			m.position = 0;
-			metrics.push_back(&m);
+			CompositionMetrics *m = new CompositionMetrics();
+			m->tempo = initTempo;
+			m->position = 0;
+			metrics.push_back(m);
 		}
 		else {
 			metrics[0]->tempo = initTempo;
@@ -167,10 +167,10 @@ public:
 	 */
 	void setInitialTimeSignature(TimeSignature initTimeSig) {
 		if (metrics.size() == 0) {
-			CompositionMetrics m;
-			m.timeSignature = initTimeSig;
-			m.position = 0;
-			metrics.push_back(&m);
+      CompositionMetrics *m = new CompositionMetrics();
+      m->timeSignature = initTimeSig;
+			m->position = 0;
+			metrics.push_back(m);
 		}
 		else {
 			metrics[0]->timeSignature = initTimeSig;

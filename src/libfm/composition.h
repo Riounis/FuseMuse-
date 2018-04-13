@@ -92,10 +92,7 @@ public:
 	 */
 	CompositionMetrics* getCompositionMetricsAtPosition(int pos) {
 		for (int i = metrics.size() - 1; i >= 0; i--) {
-			printf("%d\n", metrics[i]->position);
 			if (pos >= metrics[i]->position) {
-				printf("hello\n");
-				printf("%d\n", metrics[i]->key.getTonic());
 				return metrics[i];
 			}
 		}
@@ -127,17 +124,11 @@ public:
 	void setInitialKey(Key initKey) {
 		if (metrics.size() == 0) {
 			CompositionMetrics *m = new CompositionMetrics();
-			printf("about to set metrics key\n");
 			m->key = initKey;
 			m->position = 0;
 			metrics.push_back(m);
-			printf("pushing back initial key\n");
-			printf("%d\n", metrics[0]->key.getTonic());
-			printf("%d\n", metrics[0]->position);
 		}
 		else {
-			printf("in metrics size != 0\n");
-			printf("%d\n", metrics[0]->key.getTonic());
 			metrics[0]->key = initKey;
 		}
 	}
@@ -178,30 +169,121 @@ public:
 	}
 	
 	/**
+	 * Adds a key change to the given key at the given position in the composition.
 	 *
+	 * @param newKey The key that should be changed to at the given position.
+	 * @param pos The position the key change should occur.
+	 * @return Whether the key was changed.
 	 */
 	bool addKeyChange(Key newKey, int pos) {
 		if (metrics.size() == 0) {
 			return false;
 		}
-		
+		int index = compositionMetricsAtPosition(pos);
+		if (index > -1) {
+			metrics[index]->key = newKey;
+			return true;
+		}
+		else {
+			CompositionMetrics *mets = getCompositionMetricsAtPosition(pos);
+			if (mets->key.equals(newKey)) {
+				return false;
+			}
+			else {
+				CompositionMetrics *keyChange = new CompositionMetrics();
+				keyChange->position = pos;
+				keyChange->key = newKey;
+				keyChange->tempo = mets->tempo;
+				keyChange->timeSignature = mets->timeSignature;
+				for (std::vector<CompositionMetrics*>::iterator it = metrics.begin();
+						it != metrics.end(); ++it) {
+					if ((*it)->position > pos) {
+						metrics.insert(it, keyChange);
+						return true;
+					}
+				}
+				metrics.push_back(keyChange);
+				return true;
+			}
+		}
 	}
 	
 	/**
+	 * Adds a tempo change at the given position in the composition.
 	 *
+	 * @param newTempo The tempo that should be changed to at the given position.
+	 * @param pos The position the tempo change should occur.
+	 * @return Whether the tempo was changed.
 	 */
 	bool addTempoChange(int newTempo, int pos) {
 		if (metrics.size() == 0) {
 			return false;
 		}
+		int index = compositionMetricsAtPosition(pos);
+		if (index > -1) {
+			metrics[index]->tempo = newTempo;
+		}
+		else {
+			CompositionMetrics *mets = getCompositionMetricsAtPosition(pos);
+			if (mets->tempo == newTempo) {
+				return false;
+			}
+			else {
+				CompositionMetrics *tempoChange = new CompositionMetrics();
+				tempoChange->position = pos;
+				tempoChange->tempo = newTempo;
+				tempoChange->key = mets->key;
+				tempoChange->timeSignature = mets->timeSignature;
+				for (std::vector<CompositionMetrics*>::iterator it = metrics.begin();
+						it != metrics.end(); ++it) {
+					if ((*it)->position > pos) {
+						metrics.insert(it, tempoChange);
+						return true;
+					}
+				}
+				metrics.push_back(tempoChange);
+				return true;
+			}
+		}
 	}
 	
 	/**
+	 * Adds a time signature change at the given position in the composition.
 	 *
+	 * @param newTimeSig The time signature that should be changed to at the given position.
+	 * @param pos The position the time signature change should occur.
+	 * @return Whether the time signature was changed.
 	 */
 	bool addTimeSignatureChange(TimeSignature newTimeSig, int pos) {
 		if (metrics.size() == 0) {
 			return false;
+		}
+		int index = compositionMetricsAtPosition(pos);
+		if (index > -1) {
+			metrics[index]->timeSignature = newTimeSig;
+		}
+		else {
+			CompositionMetrics *mets = getCompositionMetricsAtPosition(pos);
+			if (mets->timeSignature.num == newTimeSig.num &&
+					mets->timeSignature.denom == newTimeSig.denom) {
+				return false;
+			}
+			else {
+				CompositionMetrics *timeSigChange = new CompositionMetrics();
+				timeSigChange->position = pos;
+				timeSigChange->key = mets->key;
+				timeSigChange->tempo = mets->tempo;
+				timeSigChange->timeSignature = newTimeSig;
+				for (std::vector<CompositionMetrics*>::iterator it = metrics.begin();
+						it != metrics.end(); ++it) {
+					if ((*it)->position > pos) {
+						metrics.insert(it, timeSigChange);
+						return true;
+					}
+				}
+				metrics.push_back(timeSigChange);
+				return true;
+			}
 		}
 	}
 	
@@ -229,17 +311,25 @@ public:
 					return true;
 				}
 				else if ((*it)->position > mets->position) {
-					if ((*it)->key.getTonic() == mets->key.getTonic() &&
-							(*it)->key.getScale() == mets->key.getScale() &&
+					it--;
+					if ((*it)->key.equals(mets->key) &&
 							(*it)->timeSignature.num == mets->timeSignature.num &&
 							(*it)->timeSignature.denom == mets->timeSignature.denom &&
 							(*it)->tempo == mets->tempo) {
 						return false;		
 					}
+					it++;
 					metrics.insert(it, mets);
 					return true;
 				}
 				it++;
+			}
+			it--;
+			if ((*it)->key.equals(mets->key) &&
+					(*it)->timeSignature.num == mets->timeSignature.num &&
+					(*it)->timeSignature.denom == mets->timeSignature.denom &&
+					(*it)->tempo == mets->tempo) {
+				return false;		
 			}
 			metrics.push_back(mets);
 			return true;
@@ -251,7 +341,16 @@ public:
 	 */
 	bool updateCompositionMetricsAtPositionTest(int pos, Key newKey, int newTempo,
 			TimeSignature newTimeSig) {
-		return true;
+		CompositionMetrics *mets = getCompositionMetricsAtPosition(pos);
+		if (mets != NULL) {
+			mets->key = newKey;
+			mets->tempo = newTempo;
+			mets->timeSignature = newTimeSig;
+			return true;
+		}
+		else {
+			return false;
+		}
 	}
 	
 	/**
@@ -265,11 +364,11 @@ public:
 	 *
 	 */
 	Part* getPart(std::string name) {
-		/**for (int i = 0; i < parts.size(); i++) {
-			if (parts[i]->name == name) {
+		for (int i = 0; i < parts.size(); i++) {
+			if (parts[i]->getName() == name) {
 				return parts[i];
 			}
-		}*/
+		}
 		return NULL;
 	}
 	
@@ -284,12 +383,12 @@ public:
 	 *
 	 */
 	bool addPart(Part p) {
-		/**for (int i = 0; i < parts.size(); i++) {
-			if (parts[i]->name == p.name) {
+		for (int i = 0; i < parts.size(); i++) {
+			if (parts[i]->getName() == p.getName()) {
 				return false;
 			}
 		}
-		parts.push_back(&p);*/
+		parts.push_back(&p);
 		return true;
 	}
 	
@@ -297,12 +396,12 @@ public:
 	 *
 	 */
 	bool registerPatternSegment(PatternSegment *p) {
-		/**for (int i = 0; i < patternSegments.size(); i++) {
-			if (patternSegments[1]->name == p.name) {
+		for (int i = 0; i < patternSegments.size(); i++) {
+			if (patternSegments[i]->getName() == p->getName()) {
 				return false;
 			}
 		}
-		patternSegments.push_back(&p);*/
+		patternSegments.push_back(p);
 		return true;
 	}
 	
@@ -310,25 +409,36 @@ public:
 	 *
 	 */
 	bool editPatternSegment(PatternSegment *p) {
-		
+		for (int i = 0; i < patternSegments.size(); i++) {
+			if (patternSegments[i]->getName() == p->getName()) {
+				patternSegments[i] = p;
+				return true;
+			}
+		}
+		return false;
 	}
 	
 	/**
 	 *
 	 */
 	PatternSegment* getPatternSegment(std::string name) {
-		/**for (int i = 0; i < patternSegments.size(); i++) {
-			if (patternSegments[i]->name == name) {
+		for (int i = 0; i < patternSegments.size(); i++) {
+			if (patternSegments[i]->getName() == name) {
 				return patternSegments[i];
 			}
-		}*/
+		}
+		return NULL;
 	}
 	
 	/**
 	 *
 	 */
 	bool addToPattern(std::string name) {
-		
+		if (getPatternSegment(name) != NULL) {
+			pattern.push_back(name);
+			return true;
+		}
+		return false;
 	}
 	
 	/**
@@ -340,7 +450,7 @@ public:
 	 *
 	 */
 	void resetPattern() {
-		
+		pattern.clear();
 	}
 	
 	/**

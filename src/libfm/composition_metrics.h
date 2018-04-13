@@ -382,6 +382,29 @@ public:
 			return -1;
 		}
 	}
+	
+	/**
+	 * Returns whether the key is the same as the key passed in.
+	 *
+	 * @param key The key to be tested against this key
+	 * @return Whether the key is the same as the given key
+	 */
+	bool equals(Key key) {
+		if (key.getTonic() != tonic) {
+			return false;
+		}
+		else if (key.getIntervals().size() != intervals.size()) {
+			return false;
+		}
+		else {
+			for (int i = 0; i < intervals.size(); i++) {
+				if (key.getIntervals()[i] != intervals[i]) {
+					return false;
+				}
+			}
+			return true;
+		}
+	}
 private:
     char tonic;
     std::vector<char> intervals;

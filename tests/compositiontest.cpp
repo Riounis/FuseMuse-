@@ -39,14 +39,11 @@ TEST(compositionTest, getCompositionMetricsAtPositionTest) {
 TEST(compositionTest, setInitialKeyTest) {
 	Composition comp;
 	Key key(fs3, minor_intervals);
-	printf("haven't set initial key yet\n");
 	comp.setInitialKey(key);
-	printf("testing initial key\n");
 	ASSERT_EQ(key.getTonic(),
 			comp.getCompositionMetricsAtPosition(0)->key.getTonic());
 	// Test change in initial key
 	Key key2(g3, major_intervals);
-	printf("testing initial key change\n");
 	comp.setInitialKey(key2);
 	ASSERT_EQ(key2.getTonic(),
 			comp.getCompositionMetricsAtPosition(0)->key.getTonic());
@@ -208,11 +205,9 @@ TEST(compositionTest, getPartTest) {
 	Part p("drumline");
 	comp.addPart(p);
 	// Test no part with name
-	Part *p2 = comp.getPart("bass");
-	ASSERT_EQ(NULL, p2);
+	ASSERT_EQ(NULL, comp.getPart("bass"));
 	// Test part with name
-	Part *p3 = comp.getPart("drumline");
-	ASSERT_EQ("drumline", p3->getName());
+	ASSERT_EQ("drumline", comp.getPart("drumline")->getName());
 }
 
 TEST(compositionTest, getPartsTest) {

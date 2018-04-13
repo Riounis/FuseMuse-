@@ -4,13 +4,14 @@
  *
  */
  
- #ifndef COMPOSITION_H
+#ifndef COMPOSITION_H
 #define COMPOSITION_H
 
 #include <vector>
 #include <string>
 #include "composition_metrics.h"
 #include "part.h"
+#include "packetpart.h"
 
 /**
  * A PatternSegment is an object that represents a piece of a song (such as a chorus or
@@ -82,7 +83,8 @@ private:
 
 class Composition {
 public:
-	Composition(): metrics(), parts(), pattern(), patternSegments(), chordProgression(){}
+	Composition(): metrics(), parts(), pattern(), patternSegments(), chordProgression(),
+		root(NULL){};
 	
 	/**
 	 * Returns the composition metrics being used at the given position in the composition.
@@ -458,6 +460,10 @@ public:
 	 */
 	Part getChordProgression() { return chordProgression; }
 	
+	PacketPart* getPacketTreeRoot() { return root; }
+	
+	void setPacketTreeRoot(PacketPart *r) { root = r; }
+	
 	// Add tree of PacketParts
 private:
 	int compositionMetricsAtPosition(int pos) {
@@ -473,6 +479,7 @@ private:
 	std::vector<PatternSegment*> patternSegments;
 	std::vector<std::string> pattern;
 	Part chordProgression;
+	PacketPart *root;
 };
 
 

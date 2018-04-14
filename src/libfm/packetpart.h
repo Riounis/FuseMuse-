@@ -55,7 +55,7 @@ public:
 		return false;
 	}
 	std::vector<PacketPart*> getChildren() { return children; }
-private:
+  
 	PacketPart *parent;
 	std::vector<PacketPart*> children;
 	Part part;

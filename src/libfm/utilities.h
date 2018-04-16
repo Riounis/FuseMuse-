@@ -203,7 +203,7 @@ void from_json(const nlohmann::json &j, CompositionMetrics &compositionMetrics) 
 // ********************PACKET PART*************************
 void to_json(nlohmann::json &j, const PacketPart &packetPart) {
 	j = nlohmann::json{
-                {"children", std::vector<PacketPart>()},
+        {"children", std::vector<PacketPart>()},
 		{"part", packetPart.getPart()},
 		{"packetPath", packetPart.getPacketPath()},
 		{"mode", packetPart.getMode()},
@@ -283,11 +283,17 @@ void from_json(const nlohmann::json &j, Composition &comp) {
 typedef std::string (*callback)(std::string zipPath, std::string mode, std::string input);
 
 void run(callback execute, PacketPart *node, nlohmann::json *compositionJSON,
-                std::string cmPath) {
+                std::string cmPath, Composition &comp) {
     if(node) {
             if (node->executed == false) {
-                    *compositionJSON = execute(node->packetPath, node->mode, compositionJSON->dump());
-                    *compositionJSON = execute(cmPath, "control", *compositionJSON);
+					nlohmann::json packetOut;
+					packetOut = execute(node->packetPath, node->mode, compositionJSON->dump());
+                    Part newPart;
+					from_json(packetOut, newPart);
+					comp.addPart(&newPart);
+					node->setPart(newPart);
+					to_json(*compositionJSON, comp);
+					*compositionJSON = execute(cmPath, "control", *compositionJSON);
                     node->executed = true;
             }
             if (!node->isLeaf()) {
@@ -307,10 +313,9 @@ std::string executeShell(callback execute, PacketPart *rootNode,
        Composition comp;
        from_json(composition, comp);
        comp.setPacketTreeRoot(rootNode);
-       to_json(composition, comp);
        // Execute Packets in a Leftmost Depth-First-Search order, passing them the
        // most recent composition JSON
-       run(execute, rootNode, &composition, cmPath);
+       run(execute, rootNode, &composition, cmPath, comp);
        return execute(cmPath, "finalcontrol", "");
 }
 

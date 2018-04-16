@@ -63,7 +63,7 @@ public:
 	void setExecuted(bool exe) { executed = exe; }
 	void execute() { executed = true; }
 	std::vector<PacketPart*> getChildren() const { return children; }
-private:
+	
 	PacketPart *parent;
 	std::vector<PacketPart*> children;
 	Part part;

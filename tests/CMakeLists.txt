@@ -38,5 +38,5 @@ add_executable(testmain testmain.cpp notetest.cpp compositionmetricstest.cpp
 	compositiontest.cpp)
 include_directories(../src)
 include_directories(../src/libfm)
-target_link_libraries(testmain gtest_main fmpp)
+target_link_libraries(testmain gtest_main)
 add_test(NAME testmain COMMAND testmain)

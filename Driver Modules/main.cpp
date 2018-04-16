@@ -26,7 +26,7 @@ int main() {
 	seg.setChordProgression(&chordProg);
 	comp.registerPatternSegment(&seg);
 	comp.addToPattern("song");
-	nlohmann::json *j = new nlohmann::json();
-	to_json(*j, comp);
-	printf("%s\n", *j);
+	nlohmann::json j;
+	to_json(j, comp);
+	std::cout << j.dump() << std::endl;
 }

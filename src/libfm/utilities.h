@@ -97,7 +97,7 @@ void from_json(const nlohmann::json &j, Dynamics &dynamics) {
 void to_json(nlohmann::json &j, const Part &part) {
 	j = nlohmann::json{
 		{"name", part.getName()},
-		{"events"},
+		{"events", nlohmann::json::array()},
 		{"length", part.getLength()}
 	};
 	std::vector<Event*>::const_iterator it;
@@ -106,7 +106,7 @@ void to_json(nlohmann::json &j, const Part &part) {
 		Note *n = nullptr;
 		Chord *c = nullptr;
 		Dynamics *d = nullptr;
-		if (n = dynamic_cast<Note*>(e)) {
+    if (n = dynamic_cast<Note*>(e)) {
 			j["events"].push_back(*n);
 		}
 		else if (c = dynamic_cast<Chord*>(e)) {
@@ -141,7 +141,7 @@ void from_json(const nlohmann::json &j, Part &part) {
 }
 
 // ******************PATTERN SEGMENT***********************
-void to_json(nlohmann::json &j, PatternSegment &patternSegment) {
+void to_json(nlohmann::json &j, const PatternSegment &patternSegment) {
 	j = nlohmann::json{
 		{"name", patternSegment.getName()},
 		{"duration", patternSegment.getDuration()},
@@ -229,13 +229,13 @@ void from_json(const nlohmann::json &j, PacketPart &packetPart) {
 
 // ********************COMPOSITION*************************
 void to_json(nlohmann::json &j, const Composition &comp) {
-	j = nlohmann::json{
-		{"metrics"},
-		{"parts"},
-		{"patternSegments"},
-		{"pattern", comp.getPattern()},
-		{"packetTreeRoot", *comp.getPacketTreeRoot()}
-	};
+  j["metrics"] = std::vector<CompositionMetrics>();
+	j["parts"] = std::vector<Part>();
+	j["patternSegments"] = std::vector<PatternSegment>();
+	j["pattern"] = comp.getPattern();
+  if(comp.getPacketTreeRoot())
+    j["packetTreeRoot"] = *comp.getPacketTreeRoot();
+	
 	std::vector<CompositionMetrics*> metrics = comp.getAllCompositionMetrics();
 	for (int i = 0; i < metrics.size(); i++) {
 		j["metrics"].push_back(*metrics[i]);

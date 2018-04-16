@@ -1,12 +1,9 @@
-/*
- * File:	simpledriver.cpp
- * Author:	Sam Rappl
- *
- */
+#include <stdio.h>
+#include <nlohmann/json.hpp>
+#include "libfm/composition.h"
+#include "libfm/utilities.h"
 
-#include "simpledriver.hpp"
-
-nlohmann::json execute() {
+int main() {
 	Composition comp;
 	CompositionMetrics mets;
 	Key key(c3, major_intervals);
@@ -18,10 +15,10 @@ nlohmann::json execute() {
 	comp.setInitialCompositionMetrics(&mets);
 	PatternSegment seg("song", timeSig.durationOfMeasure()*4);
 	Part chordProg;
-	Chord one(c_major_chord);
-	Chord two(g_major_chord);
-	Chord three(a_minor_chord);
-	Chord four(f_major_chord);
+	Chord one(c_major_chord, whole_note);
+	Chord two(g_major_chord, whole_note);
+	Chord three(a_minor_chord, whole_note);
+	Chord four(f_major_chord, whole_note);
 	chordProg.appendChord(&one);
 	chordProg.appendChord(&two);
 	chordProg.appendChord(&three);
@@ -31,6 +28,5 @@ nlohmann::json execute() {
 	comp.addToPattern("song");
 	nlohmann::json *j = new nlohmann::json();
 	to_json(*j, comp);
-	return *j;	
+	printf("%s\n", *j);
 }
- 

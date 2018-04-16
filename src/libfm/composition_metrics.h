@@ -33,6 +33,16 @@ struct TimeSignature {
 			this->denom = 4;
 		}
 	}
+	
+	/**
+	 * Returns the duration of one measure in FuseMuse position units
+	 *
+	 * @return The duration of one measure in FuseMuse position units
+	 */
+	int durationOfMeasure() {
+		return (384 * num) / denom;
+	}
+	
     char num;
     char denom;
 };

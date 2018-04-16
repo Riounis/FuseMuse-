@@ -240,9 +240,9 @@ public:
 	 * @return The pitches that are played at the position of the music event
 	 * 		pointed to by the iterator.
 	 */
-	std::vector<char> getCurrentPitches(std::vector<Event*>::iterator it) {
+	std::vector<int> getCurrentPitches(std::vector<Event*>::iterator it) {
 		if (events.size() == 0) {
-			std::vector<char> drop;
+			std::vector<int> drop;
 			return drop;
 		}
 		bool up = false;
@@ -251,7 +251,7 @@ public:
 			Dynamics *d = nullptr;
 			if (d = dynamic_cast<Dynamics*>(e)) {
 				if (it == begin() && !listContainsPitches()) {
-					std::vector<char> drop;
+					std::vector<int> drop;
 					return drop;
 				}
 				else if (it == begin()) {
@@ -268,7 +268,7 @@ public:
 				Note *n = nullptr;
 				Chord *c = nullptr;
 				if (n = dynamic_cast<Note*>(e)) {
-					std::vector<char> ret;
+					std::vector<int> ret;
 					ret.push_back(n->pitch);
 					return ret;
 				}
@@ -285,7 +285,7 @@ public:
 	 * @param pos The position at which to retrieve pitches.
 	 * @return The pitches played at the given position.
 	 */
-	std::vector<char> getPitchesAtPosition(int pos) {
+	std::vector<int> getPitchesAtPosition(int pos) {
 		return getCurrentPitches(getIteratorAtPosition(pos));
 	}
 	

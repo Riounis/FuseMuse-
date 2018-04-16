@@ -64,7 +64,7 @@ void to_json(nlohmann::json &j, const Chord &chord) {
 }
 
 void from_json(const nlohmann::json &j, Chord &chord) {
-	chord.pitches = j.at("pitches").get<std::vector<char>>();
+	chord.pitches = j.at("pitches").get<std::vector<int>>();
 	chord.duration = j.at("duration").get<int>();
 	chord.triplet = j.at("triplet").get<int>();
 	chord.dotted = j.at("dotted").get<int>();
@@ -166,7 +166,7 @@ void to_json(nlohmann::json &j, const Key &key) {
 }
 
 void from_json(const nlohmann::json &j, Key &key) {
-	key.setTonic(j.at("tonic").get<char>());
+	key.setTonic(j.at("tonic").get<int>());
 	key.setIntervals(j.at("intervals").get<std::vector<char>>());
 }
 

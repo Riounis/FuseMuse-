@@ -64,7 +64,7 @@ void to_json(nlohmann::json &j, const Chord &chord) {
 }
 
 void from_json(const nlohmann::json &j, Chord &chord) {
-	chord.pitches = j.at("pitches").get<std::vector<char>>();
+	chord.pitches = j.at("pitches").get<std::vector<int>>();
 	chord.duration = j.at("duration").get<int>();
 	chord.triplet = j.at("triplet").get<int>();
 	chord.dotted = j.at("dotted").get<int>();
@@ -166,7 +166,7 @@ void to_json(nlohmann::json &j, const Key &key) {
 }
 
 void from_json(const nlohmann::json &j, Key &key) {
-	key.setTonic(j.at("tonic").get<char>());
+	key.setTonic(j.at("tonic").get<int>());
 	key.setIntervals(j.at("intervals").get<std::vector<char>>());
 }
 
@@ -203,7 +203,7 @@ void from_json(const nlohmann::json &j, CompositionMetrics &compositionMetrics) 
 // ********************PACKET PART*************************
 void to_json(nlohmann::json &j, const PacketPart &packetPart) {
 	j = nlohmann::json{
-		{"children"},
+                {"children", std::vector<PacketPart>()},
 		{"part", packetPart.getPart()},
 		{"packetPath", packetPart.getPacketPath()},
 		{"mode", packetPart.getMode()},
@@ -216,61 +216,66 @@ void to_json(nlohmann::json &j, const PacketPart &packetPart) {
 }
 
 void from_json(const nlohmann::json &j, PacketPart &packetPart) {
-	packetPart.setPart(j.at("part").get<Part>());
+        packetPart.setPart(j.at("part").get<Part>());
 	packetPart.setPacketPath(j.at("packetPath").get<std::string>());
 	packetPart.setMode(j.at("mode").get<std::string>());
 	packetPart.setExecuted(j.at("executed").get<bool>());
 	for (int i = 0; i < j.at("children").size(); i++) {
-		PacketPart *p = new PacketPart();
-		*p = j.at("children").at(i).get<PacketPart>();
-		packetPart.appendChild(p);
+            PacketPart *p = new PacketPart();
+            *p = j.at("children").at(i).get<PacketPart>();
+            packetPart.appendChild(p);
 	}
 }
 
 // ********************COMPOSITION*************************
 void to_json(nlohmann::json &j, const Composition &comp) {
-  j["metrics"] = std::vector<CompositionMetrics>();
-	j["parts"] = std::vector<Part>();
-	j["patternSegments"] = std::vector<PatternSegment>();
-	j["pattern"] = comp.getPattern();
-  if(comp.getPacketTreeRoot())
-    j["packetTreeRoot"] = *comp.getPacketTreeRoot();
-	
-	std::vector<CompositionMetrics*> metrics = comp.getAllCompositionMetrics();
-	for (int i = 0; i < metrics.size(); i++) {
-		j["metrics"].push_back(*metrics[i]);
-	}
-	std::vector<Part*> parts = comp.getParts();
-	for (int i = 0; i < parts.size(); i++) {
-		j["parts"].push_back(*parts[i]);
-	}
-	std::vector<PatternSegment*> segments = comp.getPatternSegments();
-	for (int i = 0; i < segments.size(); i++) {
-		j["patternSegments"].push_back(*segments[i]);
-	}
+    j["metrics"] = std::vector<CompositionMetrics>();
+    j["parts"] = std::vector<Part>();
+    j["patternSegments"] = std::vector<PatternSegment>();
+    j["pattern"] = comp.getPattern();
+
+    if(comp.getPacketTreeRoot()){
+        j["packetTreeRoot"] = *comp.getPacketTreeRoot();
+    }
+    std::vector<CompositionMetrics*> metrics = comp.getAllCompositionMetrics();
+    for (int i = 0; i < metrics.size(); i++) {
+            j["metrics"].push_back(*metrics[i]);
+    }
+    std::vector<Part*> parts = comp.getParts();
+    for (int i = 0; i < parts.size(); i++) {
+            j["parts"].push_back(*parts[i]);
+    }
+    std::vector<PatternSegment*> segments = comp.getPatternSegments();
+    for (int i = 0; i < segments.size(); i++) {
+            j["patternSegments"].push_back(*segments[i]);
+    }
 }
 
 void from_json(const nlohmann::json &j, Composition &comp) {
-	for (int i = 0; i < j.at("metrics").size(); i++) {
-		CompositionMetrics *mets = new CompositionMetrics();
-		*mets = j.at("metrics").at(i).get<CompositionMetrics>();
-		comp.addNewCompositionMetrics(mets);
-	}
-	for (int i = 0; i < j.at("parts").size(); i++) {
+        for (int i = 0; i < j.at("metrics").size(); i++) {
+                CompositionMetrics *mets = new CompositionMetrics();
+                *mets = j.at("metrics").at(i).get<CompositionMetrics>();
+                comp.addNewCompositionMetrics(mets);
+        }
+        for (int i = 0; i < j.at("parts").size(); i++) {
 		Part *p = new Part();
 		*p = j.at("part").at(i).get<Part>();
 		comp.addPart(*p);
-	}
+        }
 	for (int i = 0; i < j.at("patternSegments").size(); i++) {
-		PatternSegment *seg = new PatternSegment();
+                PatternSegment *seg = new PatternSegment();
 		*seg = j.at("patternSegments").at(i).get<PatternSegment>();
 		comp.registerPatternSegment(seg);
-	}
+        }
 	for (int i = 0; i < j.at("pattern").size(); i++) {
 		comp.addToPattern(j.at("pattern").at(i).get<std::string>());
-	}
-	PacketPart *pt = new PacketPart();
-	*pt = j.at("packetTreeRoot").get<PacketPart>();
+        }
+        PacketPart *pt = new PacketPart();
+        try {
+            *pt = j.at("packetTreeRoot").get<PacketPart>();
+        } catch(const std::exception& ex) {
+            pt = NULL;
+        }
 	comp.setPacketTreeRoot(pt);
 }
 
@@ -279,34 +284,34 @@ typedef std::string (*callback)(std::string zipPath, std::string mode, std::stri
 
 void run(callback execute, PacketPart *node, nlohmann::json *compositionJSON,
                 std::string cmPath) {
-        if (node->executed == false) {
-                *compositionJSON = execute(node->packetPath, node->mode, *compositionJSON);
-                *compositionJSON = execute(cmPath, "control", *compositionJSON);
-                node->executed = true;
-        }
-        if (!node->isLeaf()) {
-                std::vector<PacketPart*> children = node->getChildren();
-                for (int i = 0; i < children.size(); i++) {
-                        run(execute, children[i], compositionJSON, cmPath);
-                }
-        }
+    if(node) {
+            if (node->executed == false) {
+                    *compositionJSON = execute(node->packetPath, node->mode, compositionJSON->dump());
+                    *compositionJSON = execute(cmPath, "control", *compositionJSON);
+                    node->executed = true;
+            }
+            if (!node->isLeaf()) {
+                    std::vector<PacketPart*> children = node->getChildren();
+                    for (int i = 0; i < children.size(); i++) {
+                            run(execute, children[i], compositionJSON, cmPath);
+                    }
+            }
+    }
 }
 
 std::string executeShell(callback execute, PacketPart *rootNode,
-                std::string dmPath, std::string cmPath) {
-	// Call the Driver Module and store the JSON it passes back as a composition
-        std::string dmout;
-        dmout = execute(dmPath, "driver", "");
-        // Populate the composition with the Packet Hierarchy
-        Composition comp;
-		from_json(dmout, comp);
-        comp.setPacketTreeRoot(rootNode);
-        nlohmann::json packetin; 
-		to_json(packetin, comp);
-        // Execute Packets in a Leftmost Depth-First-Search order, passing them the
-        // most recent composition JSON
-        run(execute, rootNode, &packetin, cmPath);
-        return execute(cmPath, "finalcontrol", packetin);
+               std::string dmPath, std::string cmPath) {
+       // Call the Driver Module and store the JSON it passes back as a composition
+       nlohmann::json composition = nlohmann::json::parse(execute(dmPath, "driver", ""));
+       // Populate the composition with the Packet Hierarchy
+       Composition comp;
+       from_json(composition, comp);
+       comp.setPacketTreeRoot(rootNode);
+       to_json(composition, comp);
+       // Execute Packets in a Leftmost Depth-First-Search order, passing them the
+       // most recent composition JSON
+       run(execute, rootNode, &composition, cmPath);
+       return execute(cmPath, "finalcontrol", "");
 }
 
 #endif /* UTILITIES_H */

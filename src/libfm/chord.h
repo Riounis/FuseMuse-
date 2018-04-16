@@ -39,7 +39,7 @@ struct Chord: public Event {
 	 * @param tied Whether the chord is tied to the next chord.
 	 * @param slurred Whether the chord is slurred to the next chord.
 	 */
-    Chord(std::vector<char> pitches, int duration, int triplet = 0,
+    Chord(std::vector<int> pitches, int duration, int triplet = 0,
 			int dotted = 0, int double_dotted = 0, int staccato = 0,
 			int tenuto = 0, int accent = 0, int fermata = 0,
 			int tied = 0, int slurred = 0) : pitches(pitches),
@@ -158,7 +158,7 @@ struct Chord: public Event {
 		pitches.erase(pitches.begin());
 		return true;
 	}
-    std::vector<char> pitches;
+    std::vector<int> pitches;
     unsigned int duration : 10;
 	unsigned int triplet : 1;
 	unsigned int dotted : 1;

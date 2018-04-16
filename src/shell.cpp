@@ -13,14 +13,15 @@ typedef std::string (*callback)(std::string zipPath, std::string mode, std::stri
 std::string executeShell(callback execute, PacketPart *rootNode,
 		std::string dmPath, std::string cmPath) {
 	// Call the Driver Module and store the JSON it passes back as a composition
-	nlohmann::json dmout = execute(dmPath, "driver", "");
+	nlohmann::json composition = execute(dmPath, "driver", "");
 	// Populate the composition with the Packet Hierarchy
-	Composition comp = jsonToFMComp(dmout);
+	Composition comp;
+	from_json(&composition, &comp);
 	comp.setPacketTreeRoot(rootNode);
-	nlohmann::json packetin = fmCompToJSON(comp);
+	to_json(&composition, &comp);
 	// Execute Packets in a Leftmost Depth-First-Search order, passing them the
 	// most recent composition JSON
-	run(execute, rootNode, &packetin, cmPath);
+	run(execute, rootNode, &composition, cmPath);
 	return execute(cmPath, "finalcontrol", packetin);
 }
 

@@ -47,7 +47,7 @@ public:
 	 *
 	 * @return The name of the Part.
 	 */
-	std::string getName() { return name; }
+	std::string getName() const { return name; }
 	
 	/**
 	 * Returns an iterator indexed to the beginning of the list of music notes,
@@ -59,6 +59,7 @@ public:
 	 * @return An iterator indexed to the beginning of the list of music notes,
 	 * 		chords, and dynamics in this Part.
 	 */
+	std::vector<Event*>::const_iterator const_begin() const { return events.begin(); }
 	std::vector<Event*>::iterator begin() { return events.begin(); }
 	
 	/**
@@ -71,6 +72,7 @@ public:
 	 * @return An iterator indexed to the end of the list of music notes, chords,
 	 * 		and dynamics in this Part.
 	 */
+	std::vector<Event*>::const_iterator const_end() const { return events.end(); }
 	std::vector<Event*>::iterator end() { return events.end(); }
 	
 	/**
@@ -84,7 +86,7 @@ public:
 	 * 		or an iterator indexed to the end of the list if the removed event was the
 	 * 		last event.
 	 */
-	std::vector<Event*>::iterator erase(std::vector<Event*>::iterator it) {
+	std::vector<Event*>::iterator erase(std::vector<Event*>::const_iterator it) {
 		Event *e = *it;
 		Note *n = nullptr;
 		Chord *c = nullptr;
@@ -104,7 +106,7 @@ public:
 	 * 		to be inserted.
 	 * @param n A pointer to the Note to be inserted at the position before the iterator.
 	 */
-	void insertNote(std::vector<Event*>::iterator it, Note *n) {
+	void insertNote(std::vector<Event*>::const_iterator it, Note *n) {
 		events.insert(it, n);
 		length += n->duration;
 	}
@@ -116,7 +118,7 @@ public:
 	 * 		to be inserted.
 	 * @param n A pointer to the Chord to be inserted at the position before the iterator.
 	 */
-	void insertChord(std::vector<Event*>::iterator it, Chord *c) {
+	void insertChord(std::vector<Event*>::const_iterator it, Chord *c) {
 		events.insert(it, c);
 		length += c->duration;
 	}
@@ -128,7 +130,7 @@ public:
 	 * 		to be inserted.
 	 * @param n A pointer to the Note to be inserted at the position before the iterator.
 	 */
-	void insertDynamic(std::vector<Event*>::iterator it, Dynamics *d) {
+	void insertDynamic(std::vector<Event*>::const_iterator it, Dynamics *d) {
 		events.insert(it, d);
 	}
 	
@@ -179,14 +181,14 @@ public:
 	 *
 	 * @return The length of the Part in FuseMuse duration units.
 	 */
-	int getLength() { return length; }
+	int getLength() const { return length; }
 	
 	/**
 	 * Returns the number of music events in the Part.
 	 *
 	 * @return The number of music events in the Part.
 	 */
-	int getNumEvents() { return events.size(); }
+	int getNumEvents() const { return events.size(); }
 	
 	/**
 	 * Returns the Dynamics that are applied to the music event pointed to
@@ -197,7 +199,7 @@ public:
 	 * @return The Dynamics that are used at the position of the music event
 	 * 		pointed to by the iterator.
 	 */
-	Dynamics getCurrentDynamics(std::vector<Event*>::iterator it) {
+	Dynamics getCurrentDynamics(std::vector<Event*>::const_iterator it) {
 		if (events.size() == 0) {
 			Dynamics dynamics;
 			return dynamics;
@@ -350,20 +352,20 @@ public:
 		return pos;
 	}
 private:
-	
+
 	/** The name of the Part. */
 	std::string name;
-	
-	/** 
-	 * An ordered list of the music events (Notes, Chords, and Dynamics) in the Part.
-	 */
-	std::vector<Event*> events;
 	
 	/** 
 	 * The FuseMuse duration of the entire Part. (see libfm/utilities.h for help
 	 * understanding FuseMuse duration units)
 	 */
 	int length;
+	
+	/** 
+	 * An ordered list of the music events (Notes, Chords, and Dynamics) in the Part.
+	 */
+	std::vector<Event*> events;
 	
 	/**
 	 * A private helper method to get an iterator for a music event at a specific

@@ -14,13 +14,13 @@
 class PacketPart {
 public:
 	PacketPart() : parent(NULL), children(), part(), packetPath(), mode(), executed(false){}
-	bool isRoot() {
+	bool isRoot() const {
 		if (parent == NULL) {
 			return true;
 		}
 		return false;
 	}
-	bool isLeaf() {
+	bool isLeaf() const {
 		if (children.size() > 0) {
 			return false;
 		}
@@ -47,6 +47,7 @@ public:
 	void setPart(Part p) {
 		part = p;
 	}
+	Part getPart() const { return part; }
 	bool setMode(std::string m) {
 		if (m == "melody" || m == "harmony" || m == "support") {
 			mode = m;
@@ -54,7 +55,14 @@ public:
 		}
 		return false;
 	}
-	std::vector<PacketPart*> getChildren() { return children; }
+	std::string getMode() const { return mode; }
+	void setPacketPath(std::string path) { packetPath = path; }
+	std::string getPacketPath() const { return packetPath; }
+	bool hasBeenExecuted() const { return executed; }
+	void clearExecution() { executed = false; }
+	void setExecuted(bool exe) { executed = exe; }
+	void execute() { executed = true; }
+	std::vector<PacketPart*> getChildren() const { return children; }
 private:
 	PacketPart *parent;
 	std::vector<PacketPart*> children;

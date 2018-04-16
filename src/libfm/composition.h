@@ -39,7 +39,7 @@ public:
 	 *
 	 * @return The chord progression of this PatternSegment.
 	 */
-	Part getChordProgression() { return chordProgression; }
+	Part getChordProgression() const { return chordProgression; }
 	
 	/**
 	 * Sets the chord progression of this PatternSegment.
@@ -53,7 +53,7 @@ public:
 	 *
 	 * @return The name of this PatternSegment.
 	 */
-	std::string getName() { return name; }
+	std::string getName() const { return name; }
 	
 	/**
 	 * Sets the name of this PatternSegment.
@@ -67,7 +67,7 @@ public:
 	 *
 	 * @return The duration of this PatternSegment.
 	 */
-	int getDuration() { return duration; }
+	int getDuration() const { return duration; }
 	
 	/**
 	 * Sets the duration of this PatternSegment.
@@ -92,7 +92,7 @@ public:
 	 * @param pos The position in the composition from which to retrieve composition metrics.
 	 * @return The composition metrics used at the position.
 	 */
-	CompositionMetrics* getCompositionMetricsAtPosition(int pos) {
+	CompositionMetrics* getCompositionMetricsAtPosition(int pos) const {
 		for (int i = metrics.size() - 1; i >= 0; i--) {
 			if (pos >= metrics[i]->position) {
 				return metrics[i];
@@ -358,14 +358,14 @@ public:
 	/**
 	 *
 	 */
-	std::vector<CompositionMetrics*> getAllCompositionMetrics() {
+	std::vector<CompositionMetrics*> getAllCompositionMetrics() const {
 		return metrics;
 	}
 	
 	/**
 	 *
 	 */
-	Part* getPart(std::string name) {
+	Part* getPart(std::string name) const {
 		for (int i = 0; i < parts.size(); i++) {
 			if (parts[i]->getName() == name) {
 				return parts[i];
@@ -377,7 +377,7 @@ public:
 	/**
 	 *
 	 */
-	std::vector<Part*> getParts() {
+	std::vector<Part*> getParts() const {
 		return parts;
 	}
 	
@@ -423,7 +423,7 @@ public:
 	/**
 	 *
 	 */
-	PatternSegment* getPatternSegment(std::string name) {
+	PatternSegment* getPatternSegment(std::string name) const {
 		for (int i = 0; i < patternSegments.size(); i++) {
 			if (patternSegments[i]->getName() == name) {
 				return patternSegments[i];
@@ -446,7 +446,9 @@ public:
 	/**
 	 *
 	 */
-	std::vector<std::string> getPattern() { return pattern; }
+	std::vector<std::string> getPattern() const { return pattern; }
+	
+	std::vector<PatternSegment*> getPatternSegments() const { return patternSegments; }
 	
 	/**
 	 *
@@ -458,9 +460,9 @@ public:
 	/**
 	 *
 	 */
-	Part getChordProgression() { return chordProgression; }
+	Part getChordProgression() const { return chordProgression; }
 	
-	PacketPart* getPacketTreeRoot() { return root; }
+	PacketPart* getPacketTreeRoot() const { return root; }
 	
 	void setPacketTreeRoot(PacketPart *r) { root = r; }
 	

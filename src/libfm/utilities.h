@@ -252,22 +252,22 @@ void to_json(nlohmann::json &j, const Composition &comp) {
 }
 
 void from_json(const nlohmann::json &j, Composition &comp) {
-        for (int i = 0; i < j.at("metrics").size(); i++) {
-                CompositionMetrics *mets = new CompositionMetrics();
-                *mets = j.at("metrics").at(i).get<CompositionMetrics>();
-                comp.addNewCompositionMetrics(mets);
-        }
-        for (int i = 0; i < j.at("parts").size(); i++) {
+	for (int i = 0; i < j["metrics"].size(); i++) {
+		CompositionMetrics *mets = new CompositionMetrics();
+		*mets = j.at("metrics").at(i).get<CompositionMetrics>();
+		comp.addNewCompositionMetrics(mets);
+	}
+	for (int i = 0; i < j["parts"].size(); i++) {
 		Part *p = new Part();
 		*p = j.at("part").at(i).get<Part>();
 		comp.addPart(*p);
-        }
-	for (int i = 0; i < j.at("patternSegments").size(); i++) {
-                PatternSegment *seg = new PatternSegment();
+	}
+	for (int i = 0; i < j["patternSegments"].size(); i++) {
+		PatternSegment *seg = new PatternSegment();
 		*seg = j.at("patternSegments").at(i).get<PatternSegment>();
 		comp.registerPatternSegment(seg);
-        }
-	for (int i = 0; i < j.at("pattern").size(); i++) {
+	}
+	for (int i = 0; i < j["pattern"].size(); i++) {
 		comp.addToPattern(j.at("pattern").at(i).get<std::string>());
         }
         PacketPart *pt = new PacketPart();

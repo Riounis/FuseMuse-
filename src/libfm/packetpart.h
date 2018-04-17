@@ -13,7 +13,7 @@
 
 class PacketPart {
 public:
-	PacketPart() : parent(NULL), children(), part(), packetPath(), mode(), executed(false){}
+        PacketPart() : parent(NULL), children(), part(), packetPath(), mode(), executed(false), isActive(false){}
 	bool isRoot() const {
 		if (parent == NULL) {
 			return true;
@@ -68,8 +68,9 @@ public:
 	std::vector<PacketPart*> children;
 	Part part;
 	std::string packetPath;
-	std::string mode;
-	bool executed;
+        std::string mode;
+        bool executed;
+        bool isActive;
 };
 
 #endif /* PACKETPART_H */

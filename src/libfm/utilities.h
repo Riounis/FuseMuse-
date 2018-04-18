@@ -322,7 +322,9 @@ std::string executeShell(callback execute, PacketPart *rootNode,
        // Execute Packets in a Leftmost Depth-First-Search order, passing them the
        // most recent composition JSON
        run(execute, rootNode, &dmOutput, cmPath, comp);
-       return execute(cmPath, "finalcontrol", dmOutput.dump());
+       std::string finalJson = execute(cmPath, "finalcontrol", dmOutput.dump());
+       execute("", "play", finalJson);
+       return finalJson;
 }
 
 #endif /* UTILITIES_H */

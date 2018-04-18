@@ -238,6 +238,27 @@ public:
 		return true;
 	}
 	
+	std::vector<char> getSimpleChord(int i) {
+		std::vector<char> pitches;
+		int st = i % scale.size();
+		pitches.push_back(scale[st]);
+		int mid = (st + 2) % scale.size();
+		if (mid < st) {
+			pitches.push_back(scale[mid] + 12);
+		}
+		else {
+			pitches.push_back(scale[mid]);
+		}
+		int top = (mid + 2) % scale.size();
+		if (top < mid) {
+			pitches.push_back(scale[top] + 12);
+		}
+		else {
+			pitches.push_back(scale[top]);
+		}
+		return pitches;
+	}
+	
 	/**
 	 * Returns the second pitch of the scale.
 	 *

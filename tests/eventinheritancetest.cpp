@@ -75,7 +75,7 @@ TEST(eventInheritanceTest, mixedListInheritanceTest) {
 	events.push_back(dynamic);
 	Note note(gs7, half_note);
 	events.push_back(note);
-	std::vector<char> invec;
+	std::vector<int> invec;
 	invec.push_back(fs3);
 	invec.push_back(ef4);
 	invec.push_back(b5);

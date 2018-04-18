@@ -531,7 +531,7 @@ TEST(partGetDynamicsPositionTest, normalCaseTest) {
 TEST(partGetPitchesTest, emptyListTest) {
 	Part part;
 	std::vector<Event*>::iterator it = part.begin();
-	std::vector<char> pitches;
+	std::vector<int> pitches;
 	ASSERT_EQ(pitches, part.getCurrentPitches(it));
 }
 
@@ -545,7 +545,7 @@ TEST(partGetPitchesTest, noPitchesTest) {
 	part.appendDynamic(&dynamic3);
 	std::vector<Event*>::iterator it = part.begin();
 	it++;
-	std::vector<char> pitches;
+	std::vector<int> pitches;
 	ASSERT_EQ(pitches, part.getCurrentPitches(it));
 }
 
@@ -562,7 +562,7 @@ TEST(partGetPitchesTest, onDynamicsTest) {
 	std::vector<Event*>::iterator it = part.begin();
 	it++;
 	it++;
-	std::vector<char> pitches;
+	std::vector<int> pitches;
 	pitches.push_back(g5);
 	ASSERT_EQ(pitches, part.getCurrentPitches(it));
 }
@@ -580,7 +580,7 @@ TEST(partGetPitchesTest, postDynamicsTest) {
 	std::vector<Event*>::iterator it = part.begin();
 	it++;
 	it++;
-	std::vector<char> pitches;
+	std::vector<int> pitches;
 	pitches.push_back(g4);
 	ASSERT_EQ(pitches, part.getCurrentPitches(it));
 }

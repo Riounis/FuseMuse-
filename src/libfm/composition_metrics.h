@@ -238,8 +238,8 @@ public:
 		return true;
 	}
 	
-	std::vector<char> getSimpleChord(int i) {
-		std::vector<char> pitches;
+	std::vector<int> getSimpleChord(int i) {
+		std::vector<int> pitches;
 		int st = i % scale.size();
 		pitches.push_back(scale[st]);
 		int mid = (st + 2) % scale.size();

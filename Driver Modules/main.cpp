@@ -27,29 +27,36 @@ int main() {
 	ton += 36;
 	int scale = rand() % 100;
 	if (scale < 50) {
-		mets.key = new Key(ton, major_intervals);
+		Key key(ton, major_intervals);
+		mets.key = key;
 	}
 	else if (scale < 90) {
-		mets.key = new Key(ton, minor_intervals);
+		Key key(ton, minor_intervals);
+		mets.key = key;
 	}
 	else {
-		mets.key = new Key(ton, dorian_intervals);
+		Key key(ton, dorian_intervals);
+		mets.key = key;
 	}
 	int time = rand() % 100;
 	if (time < 75) {
-		mets.timeSignature = new TimeSignature(4, 4);
+		TimeSignature timeSig(4, 4);
+		mets.timeSignature = timeSig;
 	}
 	else if (time < 95) {
-		mets.timeSignature = new TimeSignature(3, 4);
+		TimeSignature timeSig(3, 4);
+		mets.timeSignature = timeSig;
 	}
 	else {
-		mets.timeSignature = new TimeSignature(6, 8);
+		TimeSignature timeSig(6, 8);
+		mets.timeSignature = timeSig;
 	}
 	int temp = 60;
 	temp += rand() % 180;
 	mets.tempo = temp;
 	mets.position = 0;
-	comp.setInitalCompositionMetrics(&mets);
+	comp.setInitialCompositionMetrics(&mets);
+	printf("metrics generated\n");
 	
 	// Generate generic chord progression
 	std::vector<int> chords;
@@ -74,7 +81,7 @@ int main() {
 				}
 				else {
 					prev = curr;
-					if (rand % 5 == 0) {
+					if (rand() % 5 == 0) {
 						curr = 6;
 					}
 					else {
@@ -89,7 +96,7 @@ int main() {
 				}
 				else {
 					prev = curr;
-					if (rand % 5 == 0) {
+					if (rand() % 5 == 0) {
 						curr = 1;
 					}
 					else {
@@ -99,7 +106,7 @@ int main() {
 				break;
 			case 5:
 				prev = curr;
-				curr = 1 + (rand() % 2 * (3 + rand() % 2 * 2);
+				curr = 1 + (rand() % 2 * (3 + rand() % 2 * 2));
 				break;
 			case 6:
 				prev = curr;
@@ -108,6 +115,7 @@ int main() {
 		}
 		chords.push_back(curr);
 	}
+	printf("chord prog generated\n");
 	
 	
 	// Generate Intro: can be 4 or 8 measures
@@ -129,6 +137,7 @@ int main() {
 		introPart.appendChord(&c3);
 	}
 	intro.setChordProgression(&introPart);
+	printf("intro generated\n");
 	
 	// Generate Verse: can be 8, 12, 16, or 20 measures
 	/*CompositionMetrics verseMets;
@@ -149,6 +158,7 @@ int main() {
 		versePart.appendChord(&c3);
 	}
 	verse.setChordProgression(&versePart);
+	printf("verse generated\n");
 	
 	// Generate Pre-Chorus: can be 4 measures
 	/*CompositionMetrics prechorusMets;
@@ -169,6 +179,7 @@ int main() {
 		prechorusPart.appendChord(&c3);
 	}
 	prechorus.setChordProgression(&prechorusPart);
+	printf("prechorus generated\n");
 	
 	// Generate Chorus: can be 4, 8, or 16 measures
 	/*CompositionMetrics chorusMets;
@@ -189,6 +200,7 @@ int main() {
 		chorusPart.appendChord(&c3);
 	}
 	chorus.setChordProgression(&chorusPart);
+	printf("chorus generated\n");
 	
 	// Generate Bridge: can be 8 or 16 measures
 	/*CompositionMetrics bridgeMets;
@@ -209,6 +221,7 @@ int main() {
 		bridgePart.appendChord(&c3);
 	}
 	bridge.setChordProgression(&bridgePart);
+	printf("bridge generated\n");
 	
 	// Register pattern segments
 	comp.registerPatternSegment(&intro);
@@ -216,6 +229,7 @@ int main() {
 	comp.registerPatternSegment(&prechorus);
 	comp.registerPatternSegment(&chorus);
 	comp.registerPatternSegment(&bridge);
+	printf("pattern segments registered\n");
 	
 	// generate pattern
 	if (rand() % 2 == 0) {
@@ -280,8 +294,10 @@ int main() {
 		comp.addToPattern("bridge");
 		comp.addToPattern("chorus");
 	}
+	printf("patterns generated\n");
 	
 	nlohmann::json j;
 	to_json(j, comp);
+	printf("converted to json\n");
 	std::cout << j.dump() << std::endl;
 }

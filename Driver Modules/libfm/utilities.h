@@ -99,22 +99,28 @@ void to_json(nlohmann::json &j, const Part &part) {
 		{"name", part.getName()},
 		{"events", nlohmann::json::array()},
 		{"length", part.getLength()}
-	};
-	std::vector<Event*>::const_iterator it;
-	for (it = part.const_begin(); it != part.const_end(); it++) {
+        };
+		printf("initialized part json\n");
+        std::vector<Event*>::const_iterator it;
+        for (it = part.const_begin(); it != part.const_end(); it++) {
+		printf("dynamic casting an element in part\n");
 		Event *e = *it;
 		Note *n = nullptr;
 		Chord *c = nullptr;
 		Dynamics *d = nullptr;
+		printf("declared variables\n");
     if (n = dynamic_cast<Note*>(e)) {
+		printf("it's a note\n");
 			j["events"].push_back(*n);
 		}
 		else if (c = dynamic_cast<Chord*>(e)) {
+			printf("it's a chord\n");
 			j["events"].push_back(*c);
 		}
 		else if (d = dynamic_cast<Dynamics*>(e)) {
+			printf("it's a dynamics\n");
 			j["events"].push_back(*d);
-		}
+                }
 	}	
 }
 
@@ -136,8 +142,7 @@ void from_json(const nlohmann::json &j, Part &part) {
 			*d = j.at("events").at(i);
 			part.appendDynamic(d);
 		}
-	}
-	
+	}	
 }
 
 // ******************PATTERN SEGMENT***********************
@@ -147,6 +152,7 @@ void to_json(nlohmann::json &j, const PatternSegment &patternSegment) {
 		{"duration", patternSegment.getDuration()},
 		{"chordProgression", patternSegment.getChordProgression()}
 	};
+	printf("converted pattern segment\n");
 }
 
 void from_json(const nlohmann::json &j, PatternSegment &patternSegment) {
@@ -203,11 +209,12 @@ void from_json(const nlohmann::json &j, CompositionMetrics &compositionMetrics) 
 // ********************PACKET PART*************************
 void to_json(nlohmann::json &j, const PacketPart &packetPart) {
 	j = nlohmann::json{
-                {"children", std::vector<PacketPart>()},
+        {"children", std::vector<PacketPart>()},
 		{"part", packetPart.getPart()},
 		{"packetPath", packetPart.getPacketPath()},
-		{"mode", packetPart.getMode()},
-		{"executed", packetPart.hasBeenExecuted()}
+                {"mode", packetPart.getMode()},
+                {"executed", packetPart.hasBeenExecuted()},
+                {"isActive", packetPart.isActive}
 	};
 	std::vector<PacketPart*> children = packetPart.getChildren();
 	for (int i = 0; i < children.size(); i++) {
@@ -218,8 +225,9 @@ void to_json(nlohmann::json &j, const PacketPart &packetPart) {
 void from_json(const nlohmann::json &j, PacketPart &packetPart) {
         packetPart.setPart(j.at("part").get<Part>());
 	packetPart.setPacketPath(j.at("packetPath").get<std::string>());
-	packetPart.setMode(j.at("mode").get<std::string>());
-	packetPart.setExecuted(j.at("executed").get<bool>());
+        packetPart.setMode(j.at("mode").get<std::string>());
+        packetPart.setExecuted(j.at("executed").get<bool>());
+        packetPart.isActive = false; //always disable activity on return to libFM
 	for (int i = 0; i < j.at("children").size(); i++) {
             PacketPart *p = new PacketPart();
             *p = j.at("children").at(i).get<PacketPart>();
@@ -233,22 +241,29 @@ void to_json(nlohmann::json &j, const Composition &comp) {
     j["parts"] = std::vector<Part>();
     j["patternSegments"] = std::vector<PatternSegment>();
     j["pattern"] = comp.getPattern();
+	printf("initialized fields\n");
 
     if(comp.getPacketTreeRoot()){
         j["packetTreeRoot"] = *comp.getPacketTreeRoot();
     }
+	printf("made packet tree root if there was one\n");
     std::vector<CompositionMetrics*> metrics = comp.getAllCompositionMetrics();
     for (int i = 0; i < metrics.size(); i++) {
             j["metrics"].push_back(*metrics[i]);
     }
+	printf("populated metrics\n");
     std::vector<Part*> parts = comp.getParts();
     for (int i = 0; i < parts.size(); i++) {
-            j["parts"].push_back(*parts[i]);
+            auto x = *parts[i];
+            j["parts"].push_back(x);
     }
+	printf("populated parts\n");
     std::vector<PatternSegment*> segments = comp.getPatternSegments();
     for (int i = 0; i < segments.size(); i++) {
+			printf("adding %d segment\n", i);
             j["patternSegments"].push_back(*segments[i]);
     }
+	printf("populated pattern segments\n");
 }
 
 void from_json(const nlohmann::json &j, Composition &comp) {
@@ -283,17 +298,27 @@ void from_json(const nlohmann::json &j, Composition &comp) {
 typedef std::string (*callback)(std::string zipPath, std::string mode, std::string input);
 
 void run(callback execute, PacketPart *node, nlohmann::json *compositionJSON,
-                std::string cmPath) {
+                std::string cmPath, Composition &comp) {
     if(node) {
             if (node->executed == false) {
-                    *compositionJSON = execute(node->packetPath, node->mode, compositionJSON->dump());
-                    *compositionJSON = execute(cmPath, "control", *compositionJSON);
-                    node->executed = true;
+                nlohmann::json packetOut;
+                node->isActive = true;
+                to_json(*compositionJSON, comp);
+                packetOut = nlohmann::json::parse(execute(node->packetPath, node->mode, compositionJSON->dump()));
+                node->isActive = false;
+                Part* newPart = new Part();
+                from_json(packetOut, *newPart);
+                comp.addPart(*newPart);
+
+                node->setPart(*newPart);
+                to_json(*compositionJSON, comp);
+                *compositionJSON = nlohmann::json::parse(execute(cmPath, "control", compositionJSON->dump()));
+                node->executed = true;
             }
             if (!node->isLeaf()) {
                     std::vector<PacketPart*> children = node->getChildren();
                     for (int i = 0; i < children.size(); i++) {
-                            run(execute, children[i], compositionJSON, cmPath);
+                            run(execute, children[i], compositionJSON, cmPath, comp);
                     }
             }
     }
@@ -302,16 +327,17 @@ void run(callback execute, PacketPart *node, nlohmann::json *compositionJSON,
 std::string executeShell(callback execute, PacketPart *rootNode,
                std::string dmPath, std::string cmPath) {
        // Call the Driver Module and store the JSON it passes back as a composition
-       nlohmann::json composition = nlohmann::json::parse(execute(dmPath, "driver", ""));
+       nlohmann::json dmOutput = nlohmann::json::parse(execute(dmPath, "driver", ""));
        // Populate the composition with the Packet Hierarchy
        Composition comp;
-       from_json(composition, comp);
+       from_json(dmOutput, comp);
        comp.setPacketTreeRoot(rootNode);
-       to_json(composition, comp);
        // Execute Packets in a Leftmost Depth-First-Search order, passing them the
        // most recent composition JSON
-       run(execute, rootNode, &composition, cmPath);
-       return execute(cmPath, "finalcontrol", "");
+       run(execute, rootNode, &dmOutput, cmPath, comp);
+       std::string finalJson = execute(cmPath, "finalcontrol", dmOutput.dump());
+       execute("", "play", finalJson);
+       return finalJson;
 }
 
 #endif /* UTILITIES_H */

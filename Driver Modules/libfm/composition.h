@@ -384,7 +384,7 @@ public:
 	/**
 	 *
 	 */
-	bool addPart(Part p) {
+        bool addPart(Part& p) {
 		for (int i = 0; i < parts.size(); i++) {
 			if (parts[i]->getName() == p.getName()) {
 				return false;

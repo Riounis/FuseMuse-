@@ -100,25 +100,25 @@ void to_json(nlohmann::json &j, const Part &part) {
 		{"events", nlohmann::json::array()},
 		{"length", part.getLength()}
         };
-		printf("initialized part json\n");
+		//printf("initialized part json\n");
         std::vector<Event*>::const_iterator it;
         for (it = part.const_begin(); it != part.const_end(); it++) {
-		printf("dynamic casting an element in part\n");
+		//printf("dynamic casting an element in part\n");
 		Event *e = *it;
 		Note *n = nullptr;
 		Chord *c = nullptr;
 		Dynamics *d = nullptr;
-		printf("declared variables\n");
+		//printf("declared variables\n");
     if (n = dynamic_cast<Note*>(e)) {
-		printf("it's a note\n");
+		//printf("it's a note\n");
 			j["events"].push_back(*n);
 		}
 		else if (c = dynamic_cast<Chord*>(e)) {
-			printf("it's a chord\n");
+			//printf("it's a chord\n");
 			j["events"].push_back(*c);
 		}
 		else if (d = dynamic_cast<Dynamics*>(e)) {
-			printf("it's a dynamics\n");
+			//printf("it's a dynamics\n");
 			j["events"].push_back(*d);
                 }
 	}	
@@ -152,7 +152,7 @@ void to_json(nlohmann::json &j, const PatternSegment &patternSegment) {
 		{"duration", patternSegment.getDuration()},
 		{"chordProgression", patternSegment.getChordProgression()}
 	};
-	printf("converted pattern segment\n");
+	//printf("converted pattern segment\n");
 }
 
 void from_json(const nlohmann::json &j, PatternSegment &patternSegment) {
@@ -241,29 +241,29 @@ void to_json(nlohmann::json &j, const Composition &comp) {
     j["parts"] = std::vector<Part>();
     j["patternSegments"] = std::vector<PatternSegment>();
     j["pattern"] = comp.getPattern();
-	printf("initialized fields\n");
+	//printf("initialized fields\n");
 
     if(comp.getPacketTreeRoot()){
         j["packetTreeRoot"] = *comp.getPacketTreeRoot();
     }
-	printf("made packet tree root if there was one\n");
+	//printf("made packet tree root if there was one\n");
     std::vector<CompositionMetrics*> metrics = comp.getAllCompositionMetrics();
     for (int i = 0; i < metrics.size(); i++) {
             j["metrics"].push_back(*metrics[i]);
     }
-	printf("populated metrics\n");
+	//printf("populated metrics\n");
     std::vector<Part*> parts = comp.getParts();
     for (int i = 0; i < parts.size(); i++) {
             auto x = *parts[i];
             j["parts"].push_back(x);
     }
-	printf("populated parts\n");
+	//printf("populated parts\n");
     std::vector<PatternSegment*> segments = comp.getPatternSegments();
     for (int i = 0; i < segments.size(); i++) {
-			printf("adding %d segment\n", i);
+			//printf("adding %d segment\n", i);
             j["patternSegments"].push_back(*segments[i]);
     }
-	printf("populated pattern segments\n");
+	//printf("populated pattern segments\n");
 }
 
 void from_json(const nlohmann::json &j, Composition &comp) {

@@ -22,41 +22,41 @@ int main() {
 	// 		and the chorus or bridge may change
 	
 	// Generate benchmark metrics
-	CompositionMetrics mets;
+	CompositionMetrics *mets = new CompositionMetrics();
 	int ton = rand() % 12;
 	ton += 36;
 	int scale = rand() % 100;
 	if (scale < 50) {
 		Key key(ton, major_intervals);
-		mets.key = key;
+		mets->key = key;
 	}
 	else if (scale < 90) {
 		Key key(ton, minor_intervals);
-		mets.key = key;
+		mets->key = key;
 	}
 	else {
 		Key key(ton, dorian_intervals);
-		mets.key = key;
+		mets->key = key;
 	}
 	int time = rand() % 100;
 	if (time < 75) {
 		TimeSignature timeSig(4, 4);
-		mets.timeSignature = timeSig;
+		mets->timeSignature = timeSig;
 	}
 	else if (time < 95) {
 		TimeSignature timeSig(3, 4);
-		mets.timeSignature = timeSig;
+		mets->timeSignature = timeSig;
 	}
 	else {
 		TimeSignature timeSig(6, 8);
-		mets.timeSignature = timeSig;
+		mets->timeSignature = timeSig;
 	}
 	int temp = 60;
 	temp += rand() % 180;
-	mets.tempo = temp;
-	mets.position = 0;
-	comp.setInitialCompositionMetrics(&mets);
-	printf("metrics generated\n");
+	mets->tempo = temp;
+	mets->position = 0;
+	comp.setInitialCompositionMetrics(mets);
+	//printf("metrics generated\n");
 	
 	// Generate generic chord progression
 	std::vector<int> chords;
@@ -115,7 +115,7 @@ int main() {
 		}
 		chords.push_back(curr);
 	}
-	printf("chord prog generated\n");
+	//printf("chord prog generated\n");
 	
 	
 	// Generate Intro: can be 4 or 8 measures
@@ -124,20 +124,20 @@ int main() {
 	TimeSignature introTimeSig;
 	int introTempo;*/
 	int introLength = (rand() % 2 + 1) * 4;
-	PatternSegment intro("intro", introLength * mets.timeSignature.durationOfMeasure());
-	Part introPart;
+	PatternSegment *intro = new PatternSegment("intro", introLength * mets->timeSignature.durationOfMeasure());
+	Part *introPart = new Part();
 	for (int i = 0; i < introLength / 4; i++) {
-		Chord c(mets.key.getSimpleChord(chords[0]), whole_note);
-		Chord c1(mets.key.getSimpleChord(chords[1]), whole_note);
-		Chord c2(mets.key.getSimpleChord(chords[2]), whole_note);
-		Chord c3(mets.key.getSimpleChord(chords[3]), whole_note);
-		introPart.appendChord(&c);
-		introPart.appendChord(&c1);
-		introPart.appendChord(&c2);
-		introPart.appendChord(&c3);
+		Chord *c = new Chord(mets->key.getSimpleChord(chords[0]), whole_note);
+		Chord *c1 = new Chord(mets->key.getSimpleChord(chords[1]), whole_note);
+		Chord *c2 = new Chord(mets->key.getSimpleChord(chords[2]), whole_note);
+		Chord *c3 = new Chord(mets->key.getSimpleChord(chords[3]), whole_note);
+		introPart->appendChord(c);
+		introPart->appendChord(c1);
+		introPart->appendChord(c2);
+		introPart->appendChord(c3);
 	}
-	intro.setChordProgression(&introPart);
-	printf("intro generated\n");
+	intro->setChordProgression(introPart);
+	//printf("intro generated\n");
 	
 	// Generate Verse: can be 8, 12, 16, or 20 measures
 	/*CompositionMetrics verseMets;
@@ -145,20 +145,20 @@ int main() {
 	TimeSignature verseTimeSig;
 	int verseTempo;*/
 	int verseLength = (rand() % 4 + 2) * 4;
-	PatternSegment verse("verse", verseLength * mets.timeSignature.durationOfMeasure());
-	Part versePart;
+	PatternSegment *verse = new PatternSegment("verse", verseLength * mets->timeSignature.durationOfMeasure());
+	Part *versePart = new Part();
 	for (int i = 0; i < verseLength / 4; i++) {
-		Chord c(mets.key.getSimpleChord(chords[0]), whole_note);
-		Chord c1(mets.key.getSimpleChord(chords[1]), whole_note);
-		Chord c2(mets.key.getSimpleChord(chords[2]), whole_note);
-		Chord c3(mets.key.getSimpleChord(chords[3]), whole_note);
-		versePart.appendChord(&c);
-		versePart.appendChord(&c1);
-		versePart.appendChord(&c2);
-		versePart.appendChord(&c3);
+		Chord *c = new Chord(mets->key.getSimpleChord(chords[0]), whole_note);
+		Chord *c1 = new Chord(mets->key.getSimpleChord(chords[1]), whole_note);
+		Chord *c2 = new Chord(mets->key.getSimpleChord(chords[2]), whole_note);
+		Chord *c3 = new Chord(mets->key.getSimpleChord(chords[3]), whole_note);
+		versePart->appendChord(c);
+		versePart->appendChord(c1);
+		versePart->appendChord(c2);
+		versePart->appendChord(c3);
 	}
-	verse.setChordProgression(&versePart);
-	printf("verse generated\n");
+	verse->setChordProgression(versePart);
+	//printf("verse generated\n");
 	
 	// Generate Pre-Chorus: can be 4 measures
 	/*CompositionMetrics prechorusMets;
@@ -166,20 +166,20 @@ int main() {
 	TimeSignature prechorusTimeSig;
 	int prechorusTempo;*/
 	int prechorusLength = 4;
-	PatternSegment prechorus("prechorus", prechorusLength * mets.timeSignature.durationOfMeasure());
-	Part prechorusPart;
+	PatternSegment* prechorus = new PatternSegment("prechorus", prechorusLength * mets->timeSignature.durationOfMeasure());
+	Part *prechorusPart = new Part();
 	for (int i = 0; i < prechorusLength / 4; i++) {
-		Chord c(mets.key.getSimpleChord(chords[0]), whole_note);
-		Chord c1(mets.key.getSimpleChord(chords[1]), whole_note);
-		Chord c2(mets.key.getSimpleChord(chords[2]), whole_note);
-		Chord c3(mets.key.getSimpleChord(chords[3]), whole_note);
-		prechorusPart.appendChord(&c);
-		prechorusPart.appendChord(&c1);
-		prechorusPart.appendChord(&c2);
-		prechorusPart.appendChord(&c3);
+		Chord *c = new Chord(mets->key.getSimpleChord(chords[0]), whole_note);
+		Chord *c1 = new Chord(mets->key.getSimpleChord(chords[1]), whole_note);
+		Chord *c2 = new Chord(mets->key.getSimpleChord(chords[2]), whole_note);
+		Chord *c3 = new Chord(mets->key.getSimpleChord(chords[3]), whole_note);
+		prechorusPart->appendChord(c);
+		prechorusPart->appendChord(c1);
+		prechorusPart->appendChord(c2);
+		prechorusPart->appendChord(c3);
 	}
-	prechorus.setChordProgression(&prechorusPart);
-	printf("prechorus generated\n");
+	prechorus->setChordProgression(prechorusPart);
+	//printf("prechorus generated\n");
 	
 	// Generate Chorus: can be 4, 8, or 16 measures
 	/*CompositionMetrics chorusMets;
@@ -187,20 +187,20 @@ int main() {
 	TimeSignature chorusTimeSig;
 	int chorusTempo;*/
 	int chorusLength = pow(2, rand() % 3 + 2);
-	PatternSegment chorus("chorus", chorusLength * mets.timeSignature.durationOfMeasure());
-	Part chorusPart;
+	PatternSegment *chorus = new PatternSegment("chorus", chorusLength * mets->timeSignature.durationOfMeasure());
+	Part *chorusPart = new Part();
 	for (int i = 0; i < chorusLength / 4; i++) {
-		Chord c(mets.key.getSimpleChord(chords[0]), whole_note);
-		Chord c1(mets.key.getSimpleChord(chords[1]), whole_note);
-		Chord c2(mets.key.getSimpleChord(chords[2]), whole_note);
-		Chord c3(mets.key.getSimpleChord(chords[3]), whole_note);
-		chorusPart.appendChord(&c);
-		chorusPart.appendChord(&c1);
-		chorusPart.appendChord(&c2);
-		chorusPart.appendChord(&c3);
+		Chord *c = new Chord(mets->key.getSimpleChord(chords[0]), whole_note);
+		Chord *c1 = new Chord(mets->key.getSimpleChord(chords[1]), whole_note);
+		Chord *c2 = new Chord(mets->key.getSimpleChord(chords[2]), whole_note);
+		Chord *c3 = new Chord(mets->key.getSimpleChord(chords[3]), whole_note);
+		chorusPart->appendChord(c);
+		chorusPart->appendChord(c1);
+		chorusPart->appendChord(c2);
+		chorusPart->appendChord(c3);
 	}
-	chorus.setChordProgression(&chorusPart);
-	printf("chorus generated\n");
+	chorus->setChordProgression(chorusPart);
+	//printf("chorus generated\n");
 	
 	// Generate Bridge: can be 8 or 16 measures
 	/*CompositionMetrics bridgeMets;
@@ -208,28 +208,28 @@ int main() {
 	TimeSignature bridgeTimeSig;
 	int bridgeTempo;*/
 	int bridgeLength = (rand() % 2 + 1) * 8;
-	PatternSegment bridge("bridge", bridgeLength * mets.timeSignature.durationOfMeasure());
-	Part bridgePart;
+	PatternSegment *bridge = new PatternSegment("bridge", bridgeLength * mets->timeSignature.durationOfMeasure());
+	Part *bridgePart = new Part;
 	for (int i = 0; i < bridgeLength / 4; i++) {
-		Chord c(mets.key.getSimpleChord(chords[0]), whole_note);
-		Chord c1(mets.key.getSimpleChord(chords[1]), whole_note);
-		Chord c2(mets.key.getSimpleChord(chords[2]), whole_note);
-		Chord c3(mets.key.getSimpleChord(chords[3]), whole_note);
-		bridgePart.appendChord(&c);
-		bridgePart.appendChord(&c1);
-		bridgePart.appendChord(&c2);
-		bridgePart.appendChord(&c3);
+		Chord *c = new Chord(mets->key.getSimpleChord(chords[0]), whole_note);
+		Chord *c1 = new Chord(mets->key.getSimpleChord(chords[1]), whole_note);
+		Chord *c2 = new Chord(mets->key.getSimpleChord(chords[2]), whole_note);
+		Chord *c3 = new Chord(mets->key.getSimpleChord(chords[3]), whole_note);
+		bridgePart->appendChord(c);
+		bridgePart->appendChord(c1);
+		bridgePart->appendChord(c2);
+		bridgePart->appendChord(c3);
 	}
-	bridge.setChordProgression(&bridgePart);
-	printf("bridge generated\n");
+	bridge->setChordProgression(bridgePart);
+	//printf("bridge generated\n");
 	
 	// Register pattern segments
-	comp.registerPatternSegment(&intro);
-	comp.registerPatternSegment(&verse);
-	comp.registerPatternSegment(&prechorus);
-	comp.registerPatternSegment(&chorus);
-	comp.registerPatternSegment(&bridge);
-	printf("pattern segments registered\n");
+	comp.registerPatternSegment(intro);
+	comp.registerPatternSegment(verse);
+	comp.registerPatternSegment(prechorus);
+	comp.registerPatternSegment(chorus);
+	comp.registerPatternSegment(bridge);
+	//printf("pattern segments registered\n");
 	
 	// generate pattern
 	if (rand() % 2 == 0) {
@@ -294,10 +294,10 @@ int main() {
 		comp.addToPattern("bridge");
 		comp.addToPattern("chorus");
 	}
-	printf("patterns generated\n");
+	//printf("patterns generated\n");
 	
 	nlohmann::json j;
 	to_json(j, comp);
-	printf("converted to json\n");
+	//printf("converted to json\n");
 	std::cout << j.dump() << std::endl;
 }

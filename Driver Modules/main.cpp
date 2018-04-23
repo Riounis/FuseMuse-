@@ -127,10 +127,10 @@ int main() {
 	PatternSegment *intro = new PatternSegment("intro", introLength * mets->timeSignature.durationOfMeasure());
 	Part *introPart = new Part();
 	for (int i = 0; i < introLength / 4; i++) {
-		Chord *c = new Chord(mets->key.getSimpleChord(chords[0]), mets.timeSignature.durationOfMeasure());
-		Chord *c1 = new Chord(mets->key.getSimpleChord(chords[1]), mets.timeSignature.durationOfMeasure());
-		Chord *c2 = new Chord(mets->key.getSimpleChord(chords[2]), mets.timeSignature.durationOfMeasure());
-		Chord *c3 = new Chord(mets->key.getSimpleChord(chords[3]), mets.timeSignature.durationOfMeasure());
+		Chord *c = new Chord(mets->key.getSimpleChord(chords[0]), mets->timeSignature.durationOfMeasure());
+		Chord *c1 = new Chord(mets->key.getSimpleChord(chords[1]), mets->timeSignature.durationOfMeasure());
+		Chord *c2 = new Chord(mets->key.getSimpleChord(chords[2]), mets->timeSignature.durationOfMeasure());
+		Chord *c3 = new Chord(mets->key.getSimpleChord(chords[3]), mets->timeSignature.durationOfMeasure());
 		introPart->appendChord(c);
 		introPart->appendChord(c1);
 		introPart->appendChord(c2);
@@ -148,10 +148,10 @@ int main() {
 	PatternSegment *verse = new PatternSegment("verse", verseLength * mets->timeSignature.durationOfMeasure());
 	Part *versePart = new Part();
 	for (int i = 0; i < verseLength / 4; i++) {
-		Chord *c = new Chord(mets->key.getSimpleChord(chords[0]), mets.timeSignature.durationOfMeasure());
-		Chord *c1 = new Chord(mets->key.getSimpleChord(chords[1]), mets.timeSignature.durationOfMeasure());
-		Chord *c2 = new Chord(mets->key.getSimpleChord(chords[2]), mets.timeSignature.durationOfMeasure());
-		Chord *c3 = new Chord(mets->key.getSimpleChord(chords[3]), mets.timeSignature.durationOfMeasure());
+		Chord *c = new Chord(mets->key.getSimpleChord(chords[0]), mets->timeSignature.durationOfMeasure());
+		Chord *c1 = new Chord(mets->key.getSimpleChord(chords[1]), mets->timeSignature.durationOfMeasure());
+		Chord *c2 = new Chord(mets->key.getSimpleChord(chords[2]), mets->timeSignature.durationOfMeasure());
+		Chord *c3 = new Chord(mets->key.getSimpleChord(chords[3]), mets->timeSignature.durationOfMeasure());
 		versePart->appendChord(c);
 		versePart->appendChord(c1);
 		versePart->appendChord(c2);
@@ -169,10 +169,10 @@ int main() {
 	PatternSegment* prechorus = new PatternSegment("prechorus", prechorusLength * mets->timeSignature.durationOfMeasure());
 	Part *prechorusPart = new Part();
 	for (int i = 0; i < prechorusLength / 4; i++) {
-		Chord *c = new Chord(mets->key.getSimpleChord(chords[0]), mets.timeSignature.durationOfMeasure());
-		Chord *c1 = new Chord(mets->key.getSimpleChord(chords[1]), mets.timeSignature.durationOfMeasure());
-		Chord *c2 = new Chord(mets->key.getSimpleChord(chords[2]), mets.timeSignature.durationOfMeasure());
-		Chord *c3 = new Chord(mets->key.getSimpleChord(chords[3]), mets.timeSignature.durationOfMeasure());
+		Chord *c = new Chord(mets->key.getSimpleChord(chords[0]), mets->timeSignature.durationOfMeasure());
+		Chord *c1 = new Chord(mets->key.getSimpleChord(chords[1]), mets->timeSignature.durationOfMeasure());
+		Chord *c2 = new Chord(mets->key.getSimpleChord(chords[2]), mets->timeSignature.durationOfMeasure());
+		Chord *c3 = new Chord(mets->key.getSimpleChord(chords[3]), mets->timeSignature.durationOfMeasure());
 		prechorusPart->appendChord(c);
 		prechorusPart->appendChord(c1);
 		prechorusPart->appendChord(c2);
@@ -190,10 +190,10 @@ int main() {
 	PatternSegment *chorus = new PatternSegment("chorus", chorusLength * mets->timeSignature.durationOfMeasure());
 	Part *chorusPart = new Part();
 	for (int i = 0; i < chorusLength / 4; i++) {
-		Chord *c = new Chord(mets->key.getSimpleChord(chords[0]), mets.timeSignature.durationOfMeasure());
-		Chord *c1 = new Chord(mets->key.getSimpleChord(chords[1]), mets.timeSignature.durationOfMeasure());
-		Chord *c2 = new Chord(mets->key.getSimpleChord(chords[2]), mets.timeSignature.durationOfMeasure());
-		Chord *c3 = new Chord(mets->key.getSimpleChord(chords[3]), mets.timeSignature.durationOfMeasure());
+		Chord *c = new Chord(mets->key.getSimpleChord(chords[0]), mets->timeSignature.durationOfMeasure());
+		Chord *c1 = new Chord(mets->key.getSimpleChord(chords[1]), mets->timeSignature.durationOfMeasure());
+		Chord *c2 = new Chord(mets->key.getSimpleChord(chords[2]), mets->timeSignature.durationOfMeasure());
+		Chord *c3 = new Chord(mets->key.getSimpleChord(chords[3]), mets->timeSignature.durationOfMeasure());
 		chorusPart->appendChord(c);
 		chorusPart->appendChord(c1);
 		chorusPart->appendChord(c2);
@@ -211,10 +211,10 @@ int main() {
 	PatternSegment *bridge = new PatternSegment("bridge", bridgeLength * mets->timeSignature.durationOfMeasure());
 	Part *bridgePart = new Part;
 	for (int i = 0; i < bridgeLength / 4; i++) {
-		Chord *c = new Chord(mets->key.getSimpleChord(chords[0]), mets.timeSignature.durationOfMeasure());
-		Chord *c1 = new Chord(mets->key.getSimpleChord(chords[1]), mets.timeSignature.durationOfMeasure());
-		Chord *c2 = new Chord(mets->key.getSimpleChord(chords[2]), mets.timeSignature.durationOfMeasure());
-		Chord *c3 = new Chord(mets->key.getSimpleChord(chords[3]), mets.timeSignature.durationOfMeasure());
+		Chord *c = new Chord(mets->key.getSimpleChord(chords[0]), mets->timeSignature.durationOfMeasure());
+		Chord *c1 = new Chord(mets->key.getSimpleChord(chords[1]), mets->timeSignature.durationOfMeasure());
+		Chord *c2 = new Chord(mets->key.getSimpleChord(chords[2]), mets->timeSignature.durationOfMeasure());
+		Chord *c3 = new Chord(mets->key.getSimpleChord(chords[3]), mets->timeSignature.durationOfMeasure());
 		bridgePart->appendChord(c);
 		bridgePart->appendChord(c1);
 		bridgePart->appendChord(c2);

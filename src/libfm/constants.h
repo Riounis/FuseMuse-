@@ -1,9 +1,9 @@
-/* 
- * File:   constants.h
- * Author: Sam Rappl and Jacob Inkrote
+/*
+ * File:    constants.h
+ * Author:  Sam Rappl and Jacob Inkrote
  *
  */
- 
+
 #ifndef CONSTANTS_H
 #define CONSTANTS_H
 
@@ -300,15 +300,20 @@ const int double_dotted_whole_note = 672;
 
 /** Common Scales */
 // Common Scale Intervals
-const std::vector<char> ionian_intervals = {2, 2, 1, 2, 2, 2, 1};
-const std::vector<char> dorian_intervals = {2, 1, 2, 2, 2, 1, 2};
-const std::vector<char> phrygian_intervals = {1, 2, 2, 2, 1, 2, 2};
-const std::vector<char> lydian_intervals = {2, 2, 2, 1, 2, 2, 1};
-const std::vector<char> mixolydian_intervals = {2, 2, 1, 2, 2, 1, 2};
-const std::vector<char> aeolian_intervals = {2, 1, 2, 2, 1, 2, 2};
-const std::vector<char> locrian_intervals = {1, 2, 2, 1, 2, 2, 2};
-const std::vector<char> major_intervals = ionian_intervals;
-const std::vector<char> minor_intervals = aeolian_intervals;
+const std::vector<int> ionian_intervals = {2, 2, 1, 2, 2, 2, 1};
+const std::vector<int> dorian_intervals = {2, 1, 2, 2, 2, 1, 2};
+const std::vector<int> phrygian_intervals = {1, 2, 2, 2, 1, 2, 2};
+const std::vector<int> lydian_intervals = {2, 2, 2, 1, 2, 2, 1};
+const std::vector<int> mixolydian_intervals = {2, 2, 1, 2, 2, 1, 2};
+const std::vector<int> aeolian_intervals = {2, 1, 2, 2, 1, 2, 2};
+const std::vector<int> locrian_intervals = {1, 2, 2, 1, 2, 2, 2};
+const std::vector<int> major_intervals = ionian_intervals;
+const std::vector<int> minor_intervals = aeolian_intervals;
+const std::vector<int> minor_pentatonic_intervals = {3, 2, 2, 3, 2};
+const std::vector<int> major_pentatonic_intervals = {2, 2, 3, 2, 3};
+const std::vecotr<int> egyptian_pentatonic_intervals = {2, 3, 2, 3, 2};
+const std::vector<int> man_gong_pentatonic_intervals = {3, 2, 3, 2, 2};
+const std::vector<int> ritsusen_pentatonic_intervals = {2, 3, 2, 2, 3};
 
 /** Dynamics */
 // Dynamics
@@ -427,4 +432,3 @@ const std::vector<int> b_major_7_chord = {b3, ds4, fs4, as4};
 const std::vector<int> b_minor_7_chord = {b3, d4, fs4, a4};
 
 #endif /* CONSTANTS_H */
-

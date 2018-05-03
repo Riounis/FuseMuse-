@@ -81,12 +81,12 @@ TEST(chordTest, dotTest) {
 	
 	// Test double dotting
 	Chord chord2(a_sus2_chord, quarter_note);
-	chord2.doubledot();
+	chord2.double_dot();
 	ASSERT_EQ(double_dotted_quarter_note, chord2.duration);
 	
 	// Test double dotting a dotted chord
 	Chord chord3(e_minor_7_chord, dotted_quarter_note, false, true, false);
-	ASSERT_FALSE(chord3.doubledot());
+	ASSERT_FALSE(chord3.double_dot());
 }
 
 TEST(chordTest, tripletTest) {
@@ -94,14 +94,14 @@ TEST(chordTest, tripletTest) {
 	Chord chord2(c_major_7_chord, dotted_eighth_note, false, true, false);
 	Chord chord3(e_minor_chord, triplet_eighth_note, true, false, false);
 	
-	// Test putInTriplet function
-	chord.putInTriplet();
+	// Test put_in_triplet function
+	chord.put_in_triplet();
 	ASSERT_EQ(triplet_quarter_note, chord.duration);
-	ASSERT_FALSE(chord.putInTriplet());
-	chord2.putInTriplet();
+	ASSERT_FALSE(chord.put_in_triplet());
+	chord2.put_in_triplet();
 	ASSERT_EQ(triplet_dotted_eighth_note, chord2.duration);
-	ASSERT_FALSE(chord2.putInTriplet());
-	ASSERT_FALSE(chord3.putInTriplet());
+	ASSERT_FALSE(chord2.put_in_triplet());
+	ASSERT_FALSE(chord3.put_in_triplet());
 }
 
 TEST(chordTest, addOctaveTest) {
@@ -110,12 +110,12 @@ TEST(chordTest, addOctaveTest) {
 	invec.push_back(e4);
 	invec.push_back(g4);
 	Chord chord;
-	chord.addOctave();
+	chord.add_octave();
 	ASSERT_EQ(invec, chord.pitches);
 	for (int i = 4; i < 9; i++) {
-		ASSERT_TRUE(chord.addOctave());
+		ASSERT_TRUE(chord.add_octave());
 	}
-	ASSERT_FALSE(chord.addOctave());
+	ASSERT_FALSE(chord.add_octave());
 }
 
 TEST(chordTest, dropOctaveTest) {
@@ -124,12 +124,12 @@ TEST(chordTest, dropOctaveTest) {
 	invec.push_back(e2);
 	invec.push_back(g2);
 	Chord chord;
-	chord.dropOctave();
+	chord.drop_octave();
 	ASSERT_EQ(invec, chord.pitches);
 	for (int i = 2; i > 0; i--) {
-		ASSERT_TRUE(chord.dropOctave());
+		ASSERT_TRUE(chord.drop_octave());
 	}
-	ASSERT_FALSE(chord.dropOctave());
+	ASSERT_FALSE(chord.drop_octave());
 }
 
 TEST(chordTest, inversionTest) {

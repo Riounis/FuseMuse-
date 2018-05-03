@@ -225,7 +225,7 @@ public:
      * @param pos The position at which to retrieve Dynamics.
      * @return The Dynamics used at the given position.
      */
-    Dynamics get_dynamics_at_position(int pos) {
+    Dynamic get_dynamics_at_position(int pos) {
         return get_current_dynamics(get_iterator_at_position(pos));
     }
 

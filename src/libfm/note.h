@@ -13,7 +13,7 @@
 /**
  * A Note is an object that represents a music note with pitch and duration.
  */
-class Note: public Event {
+struct Note: public Event {
 
     /**
      * Constructs a Note object with the pitch c4 and the duration of a quarter note.

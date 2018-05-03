@@ -14,19 +14,19 @@
 
 TEST(eventInheritanceTest, dynamicsInheritanceTest) {
 	std::vector<Event> events;
-	Dynamics dynamic;
+	Dynamic dynamic;
 	events.push_back(dynamic);
 	Event *e = &events[0];
 	Note *n = nullptr;
 	Chord *c = nullptr;
-	Dynamics *d = nullptr;
+	Dynamic *d = nullptr;
 	if (n = dynamic_cast<Note*>(e)) {
 		ASSERT_FALSE(true);
 	}
 	else if (c = dynamic_cast<Chord*>(e)) {
 		ASSERT_FALSE(true);
 	}
-	else if (d = dynamic_cast<Dynamics*>(e)) {
+	else if (d = dynamic_cast<Dynamic*>(e)) {
 		ASSERT_TRUE(true);
 	}
 }
@@ -38,14 +38,14 @@ TEST(eventInheritanceTest, noteInheritanceTest) {
 	Event *e = &events[0];
 	Note *n = nullptr;
 	Chord *c = nullptr;
-	Dynamics *d = nullptr;
+	Dynamic *d = nullptr;
 	if (n = dynamic_cast<Note*>(e)) {
 		ASSERT_TRUE(true);
 	}
 	else if (c = dynamic_cast<Chord*>(e)) {
 		ASSERT_FALSE(true);
 	}
-	else if (d = dynamic_cast<Dynamics*>(e)) {
+	else if (d = dynamic_cast<Dynamic*>(e)) {
 		ASSERT_FALSE(true);
 	}
 }
@@ -57,21 +57,21 @@ TEST(eventInheritanceTest, chordInheritanceTest) {
 	Event *e = &events[0];
 	Note *n = nullptr;
 	Chord *c = nullptr;
-	Dynamics *d = nullptr;
+	Dynamic *d = nullptr;
 	if (n = dynamic_cast<Note*>(e)) {
 		ASSERT_FALSE(true);
 	}
 	else if (c = dynamic_cast<Chord*>(e)) {
 		ASSERT_TRUE(true);
 	}
-	else if (d = dynamic_cast<Dynamics*>(e)) {
+	else if (d = dynamic_cast<Dynamic*>(e)) {
 		ASSERT_FALSE(true);
 	}
 }
 
 TEST(eventInheritanceTest, mixedListInheritanceTest) {
 	std::vector<Event> events;
-	Dynamics dynamic(ff, false, true);
+	Dynamic dynamic(ff, false, true);
 	events.push_back(dynamic);
 	Note note(gs7, half_note);
 	events.push_back(note);
@@ -86,7 +86,7 @@ TEST(eventInheritanceTest, mixedListInheritanceTest) {
 		Event *e = &events[i];
 		Note *n = nullptr;
 		Chord *c = nullptr;
-		Dynamics *d = nullptr;
+		Dynamic *d = nullptr;
 		if (n = dynamic_cast<Note*>(e)) {
 			ASSERT_EQ(gs7, n->pitch);
 			ASSERT_EQ(half_note, n->duration);
@@ -95,7 +95,7 @@ TEST(eventInheritanceTest, mixedListInheritanceTest) {
 			ASSERT_EQ(invec, c->pitches);
 			ASSERT_EQ(eighth_note, c->duration);
 		}
-		else if (d = dynamic_cast<Dynamics*>(e)) {
+		else if (d = dynamic_cast<Dynamic*>(e)) {
 			ASSERT_EQ(ff, d->volume);
 			ASSERT_EQ(false, d->cresc);
 			ASSERT_EQ(true, d->decresc);

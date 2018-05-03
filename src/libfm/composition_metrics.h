@@ -315,7 +315,7 @@ private:
      * Helper method to recalculate the scale. 
      */
     void calculate_scale() {
-        scale = new std::vector<int>();
+        scale = {};
         scale.push_back(tonic);
         int pitch = tonic;
         for (std::vector<int>::size_type i = 0; i < intervals.size(); i++) {

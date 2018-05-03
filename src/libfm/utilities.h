@@ -166,7 +166,7 @@ void to_json(nlohmann::json &j, const Key &key) {
 
 void from_json(const nlohmann::json &j, Key &key) {
     key.set_tonic(j.at("tonic").get<int>());
-    key.set_intervals(j.at("intervals").get<std::vector<char>>());
+    key.set_intervals(j.at("intervals").get<std::vector<int>>());
 }
 
 // ********************TIME SIGNATURE**********************
@@ -287,11 +287,11 @@ typedef std::string (*callback)(std::string zip_path, std::string mode, std::str
 void run(callback execute, PacketPart *node, nlohmann::json *composition_json,
                 std::string cm_path, Composition &comp) {
     if(node) {
-        if (node->executed == false) {
+        if (node->has_been_executed() == false) {
             nlohmann::json packet_out;
             node->set_active();
             to_json(*composition_json, comp);
-            packet_out = nlohmann::json::parse(execute(node->packet_path, node->mode, composition_json->dump()));
+            packet_out = nlohmann::json::parse(execute(node->get_packet_path(), node->get_mode(), composition_json->dump()));
             node->set_inactive();
             Part* new_part = new Part();
             from_json(packet_out, *new_part);

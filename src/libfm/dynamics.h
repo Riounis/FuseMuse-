@@ -15,12 +15,12 @@
  * should be played, and it holds data about whether the Notes should be getting louder,
  * softer, or staying constant in volume (crescendo, decrescendo, or dynamically static).
  */
-struct Dynamics: public Event {
+struct Dynamic: public Event {
     
     /**
-     * Constructs a Dynamics object with volume mezzo piano.
+     * Constructs a Dynamic object with volume mezzo piano.
      */
-    Dynamics(): volume(mp), cresc(0), decresc(0), duration(0) {}
+    Dynamic(): volume(mp), cresc(0), decresc(0), duration(0) {}
     
     /**
      * Constructs a Dynamic object with specified volume. Volume parameter is mandatory,
@@ -30,7 +30,7 @@ struct Dynamics: public Event {
      * @param cresc Whether the notes folloing this Dynamics object are in a crescendo.
      * @param decresc Whether the notes following this Dynamics object are in a decrescendo.
      */
-    Dynamics(int volume, int cresc = 0, int decresc = 0) :
+    Dynamic(int volume, int cresc = 0, int decresc = 0) :
             volume(volume), cresc(cresc), decresc(decresc), duration(0) {}
 
     int volume;

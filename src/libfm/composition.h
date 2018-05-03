@@ -23,7 +23,7 @@ public:
     /**
      * Constructs a PatternSegment object with no name and no chord progression
      */
-    PatternSegment(): name(), duration(), chordProgression(){}
+    PatternSegment(): name(), duration(), chord_progression(){}
 
     /**
      * Constructs a PatternSegment with a name and a duration
@@ -32,7 +32,7 @@ public:
      * @param duration The length of the PatternSegment in FuseMuse duration units.
      */
     PatternSegment(std::string name, int duration) : name(name), duration(duration),
-            chordProgression(){}
+            chord_progression(){}
 
     /**
      * Returns the chord progression of this PatternSegment.
@@ -83,7 +83,7 @@ private:
 
 class Composition {
 public:
-    Composition(): metrics(), parts(), pattern(), patternSegments(), chordProgression(),
+    Composition(): metrics(), parts(), pattern(), pattern_segments(), chord_progression(),
         root(NULL){};
 
     /**
@@ -181,13 +181,13 @@ public:
         if (metrics.size() == 0) {
             return false;
         }
-        int index = compositionMetricsAtPosition(pos);
+        int index = composition_metrics_at_position(pos);
         if (index > -1) {
             metrics[index]->key = new_key;
             return true;
         }
         else {
-            CompositionMetrics *mets = getCompositionMetricsAtPosition(pos);
+            CompositionMetrics *mets = get_composition_metrics_at_position(pos);
             if (mets->key.equals(new_key)) {
                 return false;
             }
@@ -526,7 +526,7 @@ private:
      * @param pos The position at which to retrieve composition metrics.
      * @return The index of the composition metrics in the list.
      */
-    int compositionMetricsAtPosition(int pos) {
+    int composition_metrics_at_position(int pos) {
         for (int i = 0; i < metrics.size(); i++) {
             if (metrics[i]->position == pos) {
                 return i;

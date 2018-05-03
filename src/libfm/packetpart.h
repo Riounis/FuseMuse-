@@ -22,8 +22,8 @@ public:
     /**
      * Constructs an empty PacketPart.
      */
-    PacketPart() : parent(NULL), children(), part(), packetPath(), mode(),
-            executed(false), isActive(false){}
+    PacketPart() : parent(NULL), children(), part(), packet_path(), mode(),
+            executed(false), active(false){}
     
     /**
      * Returns true if this PacketPart is the root of the Packet tree.
@@ -64,7 +64,7 @@ public:
      * @param child The child to be appended.
      */
     void append_child(PacketPart *child) {
-        child->setParent(this);
+        child->set_parent(this);
         children.push_back(child);
     }
     
@@ -138,7 +138,7 @@ public:
      *
      * @return the file path of this PacketPart.
      */
-    std::string get_packet_path() const { return packetPath; }
+    std::string get_packet_path() const { return packet_path; }
     
     /**
      * Returns true if this PacketPart has been executed.
@@ -175,19 +175,19 @@ public:
     /**
      * Sets this PacketPart as the active PacketPart.
      */
-    void set_active() { is_active = true; }
+    void set_active() { active = true; }
     
     /**
      * Sets this PacketPart as inactive.
      */
-    void set_inactive() { is_active = false; }
+    void set_inactive() { active = false; }
     
     /**
      * Returns true if this PacketPart is active.
      *
      * @return true if this PacketPart is active.
      */
-    bool is_active() { return is_active; }
+    bool is_active() const { return active; }
 private:
     PacketPart *parent;
     std::vector<PacketPart*> children;
@@ -195,7 +195,7 @@ private:
     std::string packet_path;
     std::string mode;
     bool executed;
-    bool is_active;
+    bool active;
 };
 
 #endif /* PACKETPART_H */

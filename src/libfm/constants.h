@@ -311,7 +311,7 @@ const std::vector<int> major_intervals = ionian_intervals;
 const std::vector<int> minor_intervals = aeolian_intervals;
 const std::vector<int> minor_pentatonic_intervals = {3, 2, 2, 3, 2};
 const std::vector<int> major_pentatonic_intervals = {2, 2, 3, 2, 3};
-const std::vecotr<int> egyptian_pentatonic_intervals = {2, 3, 2, 3, 2};
+const std::vector<int> egyptian_pentatonic_intervals = {2, 3, 2, 3, 2};
 const std::vector<int> man_gong_pentatonic_intervals = {3, 2, 3, 2, 2};
 const std::vector<int> ritsusen_pentatonic_intervals = {2, 3, 2, 2, 3};
 

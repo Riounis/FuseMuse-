@@ -38,10 +38,10 @@ struct Note: public Event {
      * @param tied Whether the note is tied to the next note.
      * @param slurred Whether the note is slurred to the next note.
      */
-    Note(int pitch, int duration, int triplet = 0, int dotted = 0,
-            int double_dotted = 0, int staccato = 0, int tenuto = 0,
-            int accent = 0, int fermata = 0, int tied = 0,
-            int slurred = 0) : pitch(pitch), duration(duration),
+    Note(int pitch, int duration, bool triplet = false, bool dotted = false,
+            bool double_dotted = false, bool staccato = false, bool tenuto = false,
+            bool accent = false, bool fermata = false, bool tied = false,
+            bool slurred = false) : pitch(pitch), duration(duration),
             triplet(triplet), dotted(dotted),
             double_dotted(double_dotted), staccato(staccato),
             tenuto(tenuto), accent(accent), fermata(fermata),

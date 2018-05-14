@@ -205,9 +205,6 @@ public:
      * @return true if the parts are the same.
      */
     bool equals(PacketPart *packet_part) {
-        if (!parent->equals(packet_part->get_parent())) {
-            return false;
-        }
         if (children.size() != packet_part->get_children().size()) {
             return false;
         }

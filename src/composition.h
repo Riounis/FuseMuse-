@@ -11,7 +11,7 @@
 #include <string>
 #include "composition_metrics.h"
 #include "part.h"
-#include "packetpart.h"
+#include "packet_part.h"
 
 /**
  * A PatternSegment is an object that represents a piece of a song (such as a chorus or
@@ -75,6 +75,27 @@ public:
      * @param d The new duration of this PatternSegment.
      */
     void set_duration(int d) { duration = d; }
+    
+    /**
+     * Returns true if this pattern segment is the same as the pattern segment given.
+     *
+     * @param segment The pattern segment to compare to.
+     * @return true if this pattern segment is the same as the pattern segment given.
+     */
+    bool equals(PatternSegment *segment) {
+        if (name != segment->get_name()) {
+            return false;
+        }
+        if (duration != segment->get_duration()) {
+            return false;
+        }
+        Part temp_chord_progression = segment->get_chord_progression();
+        if (!chord_progression.equals(&temp_chord_progression)) {
+            return false;
+        }
+        return true;
+    }
+    
 private:
     std::string name;
     int duration;
@@ -188,7 +209,7 @@ public:
         }
         else {
             CompositionMetrics *mets = get_composition_metrics_at_position(pos);
-            if (mets->key.equals(new_key)) {
+            if (mets->key.equals(&new_key)) {
                 return false;
             }
             else {
@@ -314,7 +335,7 @@ public:
                 }
                 else if ((*it)->position > mets->position) {
                     it--;
-                    if ((*it)->key.equals(mets->key) &&
+                    if ((*it)->key.equals(&mets->key) &&
                             (*it)->time_signature.num == mets->time_signature.num &&
                             (*it)->time_signature.denom == mets->time_signature.denom &&
                             (*it)->tempo == mets->tempo) {
@@ -327,7 +348,7 @@ public:
                 it++;
             }
             it--;
-            if ((*it)->key.equals(mets->key) &&
+            if ((*it)->key.equals(&mets->key) &&
                     (*it)->time_signature.num == mets->time_signature.num &&
                     (*it)->time_signature.denom == mets->time_signature.denom &&
                     (*it)->tempo == mets->tempo) {
@@ -518,6 +539,69 @@ public:
      * @param r The root of the Packet tree.
      */
     void set_packet_tree_root(PacketPart *r) { root = r; }
+    
+    /**
+     * Returns true if this composition is the same as the composition passed in.
+     * This function takes a long time to execute. It is intended for library testing
+     * only. Please do not use it in practice.
+     *
+     * @param composition The composition to compare this to.
+     * @return true if the compositions are the same.
+     */
+    bool equals(Composition *composition) {
+        if (metrics.size() != composition->get_all_composition_metrics().size()) {
+            return false;
+        }
+        else {
+            std::vector<CompositionMetrics*> other_metrics = composition->get_all_composition_metrics();
+            for (int i = 0; i < metrics.size(); i++) {
+                if (!metrics[i]->equals(other_metrics[i])) {
+                    return false;
+                }
+            }
+        }
+        if (parts.size() != composition->get_parts().size()) {
+            return false;
+        }
+        else {
+            std::vector<Part*> other_parts = composition->get_parts();
+            for (int i = 0; i < parts.size(); i++) {
+                if (!parts[i]->equals(other_parts[i])) {
+                    return false;
+                }
+            }
+        }
+        if (pattern_segments.size() != composition->get_pattern_segments().size()) {
+            return false;
+        }
+        else {
+            std::vector<PatternSegment*> other_segments = composition->get_pattern_segments();
+            for (int i = 0; i < pattern_segments.size(); i++) {
+                if (!pattern_segments[i]->equals(other_segments[i])) {
+                    return false;
+                }
+            }
+        }
+        if (pattern.size() != composition->get_pattern().size()) {
+            return false;
+        }
+        else {
+            std::vector<std::string> other_pattern = composition->get_pattern();
+            for (int i = 0; i < pattern.size(); i++) {
+                if (pattern[i] != other_pattern[i]) {
+                    return false;
+                }
+            }
+        }
+        Part temp_chord_progression = composition->get_chord_progression();
+        if (!chord_progression.equals(&temp_chord_progression)) {
+            return false;
+        }
+        if (!root->equals(composition->get_packet_tree_root())) {
+            return false;
+        }
+        return true;
+    }
 
 private:
     /**

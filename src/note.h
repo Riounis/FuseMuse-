@@ -111,6 +111,49 @@ struct Note: public Event {
         }
 		return true;
     }
+    
+    /**
+     * Returns true if this note is equivalent to the note passed in.
+     *
+     * @param note The note to compare
+     * @return true if this note is the same as the note passed in.
+     */
+    bool equals(Note *note) {
+        if (pitch != note->pitch) {
+            return false;
+        }
+        if (duration != note->duration) {
+            return false;
+        }
+        if (triplet != note->triplet) {
+            return false;
+        }
+        if (dotted != note->dotted) {
+            return false;
+        }
+        if (double_dotted != note->double_dotted) {
+            return false;
+        }
+        if (staccato != note->staccato) {
+            return false;
+        }
+        if (tenuto != note->tenuto) {
+            return false;
+        }
+        if (accent != note->accent) {
+            return false;
+        }
+        if (fermata != note->fermata) {
+            return false;
+        }
+        if (tied != note->tied) {
+            return false;
+        }
+        if (slurred != note->slurred) {
+            return false;
+        }
+        return true;
+    }
 
     int pitch;
     int duration;

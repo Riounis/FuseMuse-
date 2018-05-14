@@ -33,6 +33,25 @@ struct Dynamic: public Event {
     Dynamic(int volume, int cresc = 0, int decresc = 0) :
             volume(volume), cresc(cresc), decresc(decresc), duration(0) {}
 
+    /**
+     * Compares this dynamic with the dynamic passed in and returns true if they are the same.
+     *
+     * @param dynamic The dynamic to compare to this one.
+     * @return true if the dynamics are the same.
+     */
+    bool equals(Dynamic *dynamic) {
+        if (volume != dynamic->volume) {
+            return false;
+        }
+        if (cresc != dynamic->cresc) {
+            return false;
+        }
+        if (decresc != dynamic->decresc) {
+            return false;
+        }
+        return true;
+    }
+
     int volume;
     bool cresc;
     bool decresc;

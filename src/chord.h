@@ -12,7 +12,7 @@
 #include "event.h"
 
 /**
- * A Chord is an object that represents several music note with the same duration.
+ * A Chord is an object that represents several music notes with the same duration.
  */
 struct Chord: public Event {
 
@@ -156,6 +156,57 @@ struct Chord: public Event {
         pitches.erase(pitches.begin());
         return true;
     }
+    
+    /**
+     * Returns true if this chord is equivalent to the chord passed in.
+     *
+     * @param chord The chord to compare
+     * @return true if this chord is the same as the chord passed in.
+     */
+    bool equals(Chord *chord) {
+        if (pitches.size() != chord->pitches.size()) {
+            return false;
+        }
+        else {
+            for (int i = 0; i < pitches.size(); i++) {
+                if (pitches[i] != chord->pitches[i]) {
+                    return false;
+                }
+            }
+        }
+        if (duration != chord->duration) {
+            return false;
+        }
+        if (triplet != chord->triplet) {
+            return false;
+        }
+        if (dotted != chord->dotted) {
+            return false;
+        }
+        if (double_dotted != chord->double_dotted) {
+            return false;
+        }
+        if (staccato != chord->staccato) {
+            return false;
+        }
+        if (tenuto != chord->tenuto) {
+            return false;
+        }
+        if (accent != chord->accent) {
+            return false;
+        }
+        if (fermata != chord->fermata) {
+            return false;
+        }
+        if (tied != chord->tied) {
+            return false;
+        }
+        if (slurred != chord->slurred) {
+            return false;
+        }
+        return true;
+    }
+    
     std::vector<int> pitches;
     int duration;
     bool triplet;

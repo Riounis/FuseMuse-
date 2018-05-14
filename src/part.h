@@ -350,6 +350,74 @@ public:
         }
         return pos;
     }
+    
+    /**
+     * Return true if this part is the same as the part passed in.
+     *
+     * @param part The part to compare this to.
+     * @return true if the parts are the same.
+     */
+    bool equals(Part *part) {
+        if (name != part->get_name()) {
+            return false;
+        }
+        if (length != part->get_length()) {
+            return false;
+        }
+        if (events.size() != part->get_num_events()) {
+            return false;
+        }
+        else {
+            auto itthis = begin();
+            auto itthat = part->begin();
+            for (int i = 0; i < events.size(); i++) {
+                Event *ethis = *itthis;
+                Note *nthis = nullptr;
+                Chord *cthis = nullptr;
+                Dynamic *dthis = nullptr;
+                if (nthis = dynamic_cast<Note*>(ethis)) {
+                    Event *ethat = *itthat;
+                    Note *nthat = nullptr;
+                    if (nthat = dynamic_cast<Note*>(ethat)) {
+                        if (!nthis->equals(nthat)) {
+                            return false;
+                        }
+                    }
+                    else {
+                        return false;
+                    }
+                }
+                else if (cthis = dynamic_cast<Chord*>(ethis)) {
+                    Event *ethat = *itthat;
+                    Chord *cthat = nullptr;
+                    if (cthat = dynamic_cast<Chord*>(ethat)) {
+                        if (!cthis->equals(cthat)) {
+                            return false;
+                        }
+                    }
+                    else {
+                        return false;
+                    }
+                }
+                else if (dthis = dynamic_cast<Dynamic*>(ethis)) {
+                    Event *ethat = *itthat;
+                    Dynamic *dthat = nullptr;
+                    if (dthat = dynamic_cast<Dynamic*>(ethat)) {
+                        if (!dthis->equals(dthat)) {
+                            return false;
+                        }
+                    }
+                    else {
+                        return false;
+                    }
+                }
+                itthis++;
+                itthat++;
+            }
+        }
+        return true;
+    }
+    
 private:
 
     /** The name of the Part. */

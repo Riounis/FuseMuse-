@@ -41,6 +41,22 @@ struct TimeSignature {
     int duration_of_measure() {
         return (whole_note * num) / denom;
     }
+    
+    /**
+     * Returns whether this time signature is equivalent to the one given.
+     *
+     * @param time_signature The time signature to compare with this one.
+     * @return true if the time signatures are the same.
+     */
+    bool equals(TimeSignature *time_signature) {
+        if (num != time_signature->num) {
+            return false;
+        }
+        if (denom != time_signature->denom) {
+            return false;
+        }
+        return true;
+    }
 
     int num;
     int denom;
@@ -296,20 +312,24 @@ public:
      * @param key The key to be tested against this key
      * @return Whether the key is the same as the given key
      */
-    bool equals(Key key) const {
-        if (key.get_tonic() != tonic) {
+    bool equals(Key *key) const {
+        if (tonic != key->get_tonic()) {
+            return false;
+        }
+        if (intervals.size() != key->get_intervals().size()) {
             return false;
         }
         else {
-            std::vector<int> other_intervals = key.get_intervals();
+            std::vector<int> other_intervals = key->get_intervals();
             for (int i = 0; i < intervals.size(); i++) {
-                if (other_intervals[i] != intervals[i]) {
+                if (intervals[i] != other_intervals[i]) {
                     return false;
                 }
             }
-            return true;
         }
+        return true;
     }
+
 private:
     /**
      * Helper method to recalculate the scale. 
@@ -349,7 +369,35 @@ private:
  * in its respective Composition.
  */
 struct CompositionMetrics {
+    
+    /**
+     * Constructs an empty composition metrics object.
+     */
     CompositionMetrics() : key(), time_signature(), tempo(80), position(0) {}
+    
+    /**
+     * Returns true if this composition metrics object is the same as the one passed
+     * in.
+     *
+     * @param composition_metrics The composition metrics to compare this to.
+     * @return true if the composition metrics are the same.
+     */
+    bool equals(CompositionMetrics *composition_metrics) {
+        if (!key.equals(&composition_metrics->key)) {
+            return false;
+        }
+        if (!time_signature.equals(&composition_metrics->time_signature)) {
+            return false;
+        }
+        if (tempo != composition_metrics->tempo) {
+            return false;
+        }
+        if (position != composition_metrics->position) {
+            return false;
+        }
+        return true;
+    }
+    
     Key key;
     TimeSignature time_signature;
     unsigned int tempo;

@@ -9,6 +9,5 @@ set(CMAKE_BUILD_TYPE Debug)
 enable_testing()
 
 add_subdirectory(src)
-add_subdirectory(src/libfm)
 add_subdirectory(tests)
 

@@ -181,9 +181,9 @@ TEST(keyTest, keyEqualsTest) {
 	Key key2(fs3, minor_intervals);
 	Key key3(fs3, dorian_intervals);
 	Key key4(g3, minor_intervals);
-	ASSERT_TRUE(key.equals(key2));
-	ASSERT_FALSE(key.equals(key3));
-	ASSERT_FALSE(key.equals(key4));
+	ASSERT_TRUE(key.equals(&key2));
+	ASSERT_FALSE(key.equals(&key3));
+	ASSERT_FALSE(key.equals(&key4));
 }
 
 TEST(compositionMetricsTest, compositionMetricsDefaultConstructorTest) {

@@ -188,6 +188,50 @@ public:
      * @return true if this PacketPart is active.
      */
     bool is_active() const { return active; }
+    
+    /**
+     * Returns the parent of this packet part.
+     *
+     * @return this packet part's parent.
+     */
+    PacketPart* get_parent() { return parent; }
+    
+    /**
+     * Returns true if the packet part given is the same as this packet part.
+     * This method takes a lot of time to run. It is used for testing. Please
+     * do not use it in applications.
+     *
+     * @param packet_part The packet part to compare to this.
+     * @return true if the parts are the same.
+     */
+    bool equals(PacketPart *packet_part) {
+        if (!parent->equals(packet_part->get_parent())) {
+            return false;
+        }
+        if (children.size() != packet_part->get_children().size()) {
+            return false;
+        }
+        else {
+            std::vector<PacketPart*> comp_children = packet_part->get_children();
+            for (int i = 0; i < children.size(); i++) {
+                if (!children[i]->equals(comp_children[i])) {
+                    return false;
+                }
+            }
+        }
+        Part temp_part = packet_part->get_part();
+        if (!part.equals(&temp_part)) {
+            return false;
+        }
+        if (packet_path != packet_part->get_packet_path()) {
+            return false;
+        }
+        if (mode != packet_part->get_mode()) {
+            return false;
+        }
+        return true;
+    }
+    
 private:
     PacketPart *parent;
     std::vector<PacketPart*> children;

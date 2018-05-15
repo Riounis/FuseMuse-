@@ -33,6 +33,21 @@ TEST(utilitiesTest, noteJSONTest) {
     ASSERT_TRUE(n3.equals(&n4));
 }
 
+TEST(utilitesTest, noteJSONTestFail) {
+    Note n(g4, dotted_half_note, false, false, false, false, true, false, false, false, false);
+    Note n2;
+    Note n3(f4, dotted_half_note, false, false, false, false, true, false, false, false, false);
+    Note n4(g4, half_note, false, false, false, false, true, false, false, false, false);
+    Note n5(g4, dotted_half_note, false, false, false, false, false, false, false, false, false);
+    nlohmann::json j;
+    to_json(j, n);
+    from_json(j, n2);
+    ASSERT_TRUE(n.equals(&n2));
+    ASSERT_FALSE(n.equals(&n3));
+    ASSERT_FALSE(n.equals(&n4));
+    ASSERT_FALSE(n.equals(&n5));
+}
+
 TEST(utilitiesTest, chordJSONTest) {
     Chord c(e_major_chord, eighth_note);
     Chord c2;

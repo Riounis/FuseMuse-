@@ -112,7 +112,7 @@ public:
      * @return Whether the new mode was valid.
      */
     bool set_mode(std::string m) {
-        if (m == "melody" || m == "harmony" || m == "support") {
+        if (m == "melody" || m == "harmony" || m == "support" || m == "melodic" || m == "harmonic" || m == "supporting") {
             mode = m;
             return true;
         }
